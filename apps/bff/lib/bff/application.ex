@@ -12,9 +12,10 @@ defmodule Bff.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Bff.PubSub},
       # Start the Endpoint (http/https)
-      BffWeb.Endpoint
-      # Start a worker by calling: Bff.Worker.start_link(arg)
-      # {Bff.Worker, arg}
+      BffWeb.Endpoint,
+
+      # Event Listener
+      Bff.Core.Listener,
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
