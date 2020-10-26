@@ -38,6 +38,23 @@ defmodule EventStore.Core do
     Repo.get(Event, id)
   end
 
+  @doc """
+  Returns max of global position.
+  """
+  def max_global_position() do
+    max_global_position_query()
+    |> Repo.one() || 0
+  end
+
+  @doc """
+  Returns max of position, per stream_name.
+  """
+  def max_position(scope_value) do
+    scope_value
+    |> max_position_query()
+    |> Repo.one() || 0
+  end
+
   # Private
 
   defp validate_event(dto) do
@@ -79,18 +96,16 @@ defmodule EventStore.Core do
 
   defp generate_position(changeset), do: changeset
 
-  defp max_position(scope_value) do
-    scope_value
-    |> max_position_query()
-    |> Repo.one() || 0
-  end
-
   defp max_position_query(scope_value) do
     scope = :stream_name
     from(r in Event, where: field(r, ^scope) == ^scope_value, select: max(r.position))
   end
 
   # END Acts as list
+
+  defp max_global_position_query() do
+    from(r in Event, select: max(r.global_position))
+  end
 
   # No need for preload
   defp list_events_query(criteria) do
@@ -120,9 +135,14 @@ defmodule EventStore.Core do
         pattern = "%#{stream_name}%"
         from q in query, where: ilike(q.stream_name, ^pattern)
 
+      {:gt_than_global, gp}, query ->
+        from q in query, where: q.global_position > ^gp
+
+      {:gt_than_position, position}, query ->
+        from q in query, where: q.position > ^position
+
       {:type, type}, query ->
-        pattern = "%#{type}%"
-        from q in query, where: ilike(q.type, ^pattern)
+        from q in query, where: q.type == ^type
 
       _arg, query ->
         query

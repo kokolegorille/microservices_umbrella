@@ -8,12 +8,11 @@ defmodule Bff do
   """
 
   def register_user_command(user_id, trace_id, attrs) do
-    id = Ecto.UUID.generate()
-    attrs = Map.put(attrs, "id", id)
+    attrs = prepare_attrs(attrs)
     case Identity.validate_user(attrs) do
       {:ok, _} ->
         %{
-          "stream_name" => "identity:command-#{id}",
+          "stream_name" => "identity:command-#{attrs["id"]}",
           "type" => "Register",
           "data" => attrs,
           "metadata" => %{
@@ -25,5 +24,16 @@ defmodule Bff do
       {:error, changeset} ->
         {:error, changeset}
     end
+  end
+
+  defp prepare_attrs(attrs) do
+    attrs
+    |> Map.put("id", Ecto.UUID.generate())
+    |> Map.put("password_hash", encrypt_password(attrs["password"]))
+    |> Map.delete("password")
+  end
+
+  defp encrypt_password(password) do
+    Identity.encrypt_password(password)
   end
 end

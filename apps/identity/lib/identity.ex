@@ -7,6 +7,8 @@ defmodule Identity do
 
   defdelegate authenticate(name, password), to: Core
 
+  defdelegate encrypt_password(password), to: Core
+
   defdelegate create_user(dto), to: Core
 
   defdelegate update_user(user, dto), to: Core

@@ -26,6 +26,8 @@ defmodule Identity.Core do
     end
   end
 
+  defdelegate encrypt_password(password), to: User
+
   # Private
 
   defp get_user_by_name(name) do
@@ -77,10 +79,7 @@ defmodule Identity.Core do
   validate new user (no db).
   """
   def validate_user(dto) do
-    case User.registration_changeset(%User{}, dto) do
-      %{valid?: true} = changeset -> {:ok, changeset}
-      %{valid?: false} = changeset -> {:error, changeset}
-    end
+    validate_user(%User{}, dto)
   end
 
   @doc """

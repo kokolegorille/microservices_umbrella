@@ -15,6 +15,8 @@ defmodule EventStore do
 
   defdelegate get_event(id), to: Core
 
+  defdelegate max_global_position(), to: Core
+
   defdelegate dispatch(event), to: Dispatcher
 
   defdelegate register(pid, filter_fun \\ fn _ -> true end), to: ListenersProvider

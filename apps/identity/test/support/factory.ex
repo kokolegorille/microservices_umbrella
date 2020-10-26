@@ -10,7 +10,7 @@ defmodule Identity.Factory do
     %User{
       name: sequence(:name, &"name-#{&1}"),
       email: sequence(:email, &"email-#{&1}@example.com"),
-      password: "secret"
+      password_hash: User.encrypt_password("secret")
     }
   end
 end
