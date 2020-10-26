@@ -2,8 +2,9 @@ defmodule Identity.Core.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder, only: ~w(id name email)a}
   @timestamps_opts type: :utc_datetime
-  @primary_key {:id, :binary_id, autogenerate: true}
+  @primary_key {:id, :binary_id, autogenerate: false}
   @foreign_key_type :binary_id
   schema "users" do
     field :name, :string
@@ -15,7 +16,7 @@ defmodule Identity.Core.User do
   end
 
   @email_regex ~r/\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
-  @required_fields ~w(name email)a
+  @required_fields ~w(id name email)a
   @registration_fields ~w(password)a
 
   @doc false
@@ -27,6 +28,7 @@ defmodule Identity.Core.User do
     |> validate_required(@required_fields)
     |> unique_constraint(:name, message: "Name already taken")
     |> unique_constraint(:email, message: "Email already taken")
+    |> unique_constraint(:id)
   end
 
   @doc false

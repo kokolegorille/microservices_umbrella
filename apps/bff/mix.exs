@@ -51,7 +51,8 @@ defmodule Bff.MixProject do
       #
       {:ecto, "~> 3.5"},
       #
-      {:event_store, in_umbrella: true}
+      {:event_store, in_umbrella: true},
+      {:identity, in_umbrella: true},
     ]
   end
 
@@ -63,7 +64,9 @@ defmodule Bff.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "cmd npm install --prefix assets"]
+      setup: ["deps.get", "cmd npm install --prefix assets"],
+      # Add this for umbrella global reset
+      "ecto.reset": []
     ]
   end
 end

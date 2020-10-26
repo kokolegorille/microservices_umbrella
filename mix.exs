@@ -32,7 +32,9 @@ defmodule MicroservicesUmbrella.MixProject do
   defp aliases do
     [
       # run `mix setup` in all child apps
-      setup: ["cmd mix setup"]
+      setup: ["cmd mix setup"],
+      # run `mix reset` in all child apps
+      reset: ["cmd mix ecto.reset"]
     ]
   end
 end

@@ -73,25 +73,27 @@ defmodule Identity.Core do
     Repo.delete(user)
   end
 
-  # Private
-
-  defp ensure_preload(any, assoc) do
-    case Ecto.assoc_loaded?(Map.get(any, assoc)) do
-      true -> any
-      false -> any |> Repo.preload(assoc)
-    end
-  end
-
-  defp validate_user(dto) do
-    validate_user(%User{}, dto)
-  end
-
-  defp validate_user(user, dto) do
-    case User.registration_changeset(user, dto) do
+  @doc """
+  validate new user (no db).
+  """
+  def validate_user(dto) do
+    case User.registration_changeset(%User{}, dto) do
       %{valid?: true} = changeset -> {:ok, changeset}
       %{valid?: false} = changeset -> {:error, changeset}
     end
   end
+
+  @doc """
+  validate existing user (no db).
+  """
+  def validate_user(user, dto) do
+    case User.changeset(user, dto) do
+      %{valid?: true} = changeset -> {:ok, changeset}
+      %{valid?: false} = changeset -> {:error, changeset}
+    end
+  end
+
+  # Private
 
   defp persist(valid_changeset, :insert) do
     Repo.insert(valid_changeset)

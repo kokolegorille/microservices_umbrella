@@ -8,15 +8,22 @@ defmodule Bff do
   """
 
   def register_user_command(user_id, trace_id, attrs) do
-    %{
-      "stream_name" => "identity:command-#{user_id}",
-      "type" => "Register",
-      "data" => attrs,
-      "metadata" => %{
-        "trace_id" => trace_id,
-        "user_id" => user_id
-      }
-    }
-    |> EventStore.Core.create_event
+    id = Ecto.UUID.generate()
+    attrs = Map.put(attrs, "id", id)
+    case Identity.validate_user(attrs) do
+      {:ok, _} ->
+        %{
+          "stream_name" => "identity:command-#{id}",
+          "type" => "Register",
+          "data" => attrs,
+          "metadata" => %{
+            "trace_id" => trace_id,
+            "user_id" => user_id
+          }
+        }
+        |> EventStore.Core.create_event()
+      {:error, changeset} ->
+        {:error, changeset}
+    end
   end
 end
