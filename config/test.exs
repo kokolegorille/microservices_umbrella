@@ -22,3 +22,8 @@ config :event_store, EventStore.Repo,
   password: "postgres",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+# Emailer
+
+config :emailer, Emailer.Mailer,
+  adapter: Bamboo.TestAdapter

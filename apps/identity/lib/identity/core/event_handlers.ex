@@ -33,7 +33,7 @@ defmodule Identity.Core.EventHandlers do
   end
 
   def handle(command) do
-    Logger.info "Unknown Command #{inspect command}"
+    Logger.info "#{__MODULE__} Unknown Command #{inspect command}"
   end
 
   defp create_event(event) do

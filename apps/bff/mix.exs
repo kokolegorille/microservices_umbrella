@@ -53,6 +53,7 @@ defmodule Bff.MixProject do
       #
       {:event_store, in_umbrella: true},
       {:identity, in_umbrella: true},
+      {:emailer, in_umbrella: true},
     ]
   end
 

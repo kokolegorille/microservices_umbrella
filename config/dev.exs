@@ -83,3 +83,8 @@ config :identity, Identity.Repo,
   password: "postgres",
   hostname: "localhost",
   pool_size: 10
+
+# Emailer
+
+config :emailer, Emailer.Mailer,
+  adapter: Bamboo.LocalAdapter

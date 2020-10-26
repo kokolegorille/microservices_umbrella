@@ -32,7 +32,7 @@ config :event_store, EventStore.Repo, migration_primary_key: [name: :id, type: :
 
 config :postgrex, :json_library, Jason
 
-#
+# Identity
 
 config :identity,
   ecto_repos: [Identity.Repo]
