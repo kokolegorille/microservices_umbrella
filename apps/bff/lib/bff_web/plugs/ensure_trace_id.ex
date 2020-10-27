@@ -9,6 +9,7 @@ defmodule BffWeb.Plugs.EnsureTraceId do
     case get_session(conn, :trace_id) do
       nil ->
         put_session(conn, :trace_id, Ecto.UUID.generate())
+
       _trace_id ->
         conn
     end

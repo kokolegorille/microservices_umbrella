@@ -17,6 +17,16 @@
             <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
               <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
             <% end %>
+            <li>
+              <%=
+                if @user_id,
+                  do: link("Logout", to: Routes.session_path(@conn, :delete), method: :delete, title: @user_id),
+                  else: [
+                    link("Login", to: Routes.session_path(@conn, :index)),
+                    link("Register", to: Routes.register_path(@conn, :index))
+                  ]
+              %>
+            </li>
           </ul>
         </nav>
       </section>

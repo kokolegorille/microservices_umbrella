@@ -26,7 +26,7 @@ defmodule EventStore.Telemetry do
       summary("event_store.repo.query.decode_time", unit: {:native, :millisecond}),
       summary("event_store.repo.query.query_time", unit: {:native, :millisecond}),
       summary("event_store.repo.query.queue_time", unit: {:native, :millisecond}),
-      summary("event_store.repo.query.idle_time", unit: {:native, :millisecond}),
+      summary("event_store.repo.query.idle_time", unit: {:native, :millisecond})
     ]
   end
 

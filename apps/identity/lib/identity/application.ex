@@ -8,8 +8,7 @@ defmodule Identity.Application do
   def start(_type, _args) do
     children = [
       {Identity.Repo, []},
-
-      Identity.Core.Listener,
+      Identity.Core.Listener
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -4,6 +4,7 @@ defmodule EventStore do
   """
 
   alias __MODULE__.Core
+
   alias __MODULE__.Core.{
     Dispatcher,
     ListenersProvider

@@ -33,7 +33,7 @@ defmodule EventStore.MixProject do
       {:postgrex, "~> 0.15.6"},
       {:jason, "~> 1.0"},
       {:telemetry_metrics, "~> 0.4"},
-      {:telemetry_poller, "~> 0.4"},
+      {:telemetry_poller, "~> 0.4"}
     ]
   end
 

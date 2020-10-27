@@ -33,10 +33,10 @@ defmodule Identity.Core.Listener do
   end
 
   @impl GenServer
-	def terminate(reason, _state) do
-    Logger.debug(fn -> "#{@name} is stopping : #{inspect reason}" end)
+  def terminate(reason, _state) do
+    Logger.debug(fn -> "#{@name} is stopping : #{inspect(reason)}" end)
     unregister()
-		:ok
+    :ok
   end
 
   defp register(filter_fun), do: EventStore.register(self(), filter_fun)

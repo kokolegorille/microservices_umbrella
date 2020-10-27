@@ -15,7 +15,7 @@ defmodule Bff.Application do
       BffWeb.Endpoint,
 
       # Event Listener
-      Bff.Core.Listener,
+      Bff.Core.Listener
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

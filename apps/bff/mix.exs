@@ -50,10 +50,11 @@ defmodule Bff.MixProject do
       {:plug_cowboy, "~> 2.0"},
       #
       {:ecto, "~> 3.5"},
+      {:phoenix_ecto, "~> 4.2"},
       #
       {:event_store, in_umbrella: true},
       {:identity, in_umbrella: true},
-      {:emailer, in_umbrella: true},
+      {:emailer, in_umbrella: true}
     ]
   end
 

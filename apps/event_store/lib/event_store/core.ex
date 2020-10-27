@@ -133,16 +133,16 @@ defmodule EventStore.Core do
     Enum.reduce(filters, query, fn
       {:stream_name, stream_name}, query ->
         pattern = "%#{stream_name}%"
-        from q in query, where: ilike(q.stream_name, ^pattern)
+        from(q in query, where: ilike(q.stream_name, ^pattern))
 
       {:gt_than_global, gp}, query ->
-        from q in query, where: q.global_position > ^gp
+        from(q in query, where: q.global_position > ^gp)
 
       {:gt_than_position, position}, query ->
-        from q in query, where: q.position > ^position
+        from(q in query, where: q.position > ^position)
 
       {:type, type}, query ->
-        from q in query, where: q.type == ^type
+        from(q in query, where: q.type == ^type)
 
       _arg, query ->
         query

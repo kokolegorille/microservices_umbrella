@@ -7,9 +7,9 @@ defmodule Identity.Core.User do
   @primary_key {:id, :binary_id, autogenerate: false}
   @foreign_key_type :binary_id
   schema "users" do
-    field :name, :string
-    field :email, :string
-    field :password_hash, :string
+    field(:name, :string)
+    field(:email, :string)
+    field(:password_hash, :string)
 
     timestamps()
   end

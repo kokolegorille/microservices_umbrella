@@ -19,7 +19,7 @@ defmodule Identity.Core do
   """
   def authenticate(name, password) do
     with %User{} = user <- get_user_by_name(name),
-      {:ok, _} <- check_password(user, password) do
+         {:ok, _} <- check_password(user, password) do
       {:ok, user}
     else
       _ -> {:error, :unauthorized}
@@ -47,8 +47,7 @@ defmodule Identity.Core do
   """
   def create_user(dto) do
     with {:ok, changeset} <- validate_user(dto),
-      {:ok, user} <- persist(changeset, :insert) do
-
+         {:ok, user} <- persist(changeset, :insert) do
       {:ok, user}
     else
       {:error, changeset} -> {:error, changeset}
@@ -60,8 +59,7 @@ defmodule Identity.Core do
   """
   def update_user(user, dto) do
     with {:ok, changeset} <- validate_user(user, dto),
-      {:ok, user} <- persist(changeset, :update) do
-
+         {:ok, user} <- persist(changeset, :update) do
       {:ok, user}
     else
       {:error, changeset} -> {:error, changeset}
@@ -134,16 +132,16 @@ defmodule Identity.Core do
 
     Enum.reduce(criteria, query, fn
       {:limit, limit}, query ->
-        from p in query, limit: ^limit
+        from(p in query, limit: ^limit)
 
       {:offset, offset}, query ->
-        from p in query, offset: ^offset
+        from(p in query, offset: ^offset)
 
       {:order, order}, query ->
-        from p in query, order_by: [{^order, ^@order_field}]
+        from(p in query, order_by: [{^order, ^@order_field}])
 
       {:preload, preloads}, query ->
-        from p in query, preload: ^preloads
+        from(p in query, preload: ^preloads)
 
       _arg, query ->
         query

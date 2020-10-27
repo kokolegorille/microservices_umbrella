@@ -86,5 +86,4 @@ config :identity, Identity.Repo,
 
 # Emailer
 
-config :emailer, Emailer.Mailer,
-  adapter: Bamboo.LocalAdapter
+config :emailer, Emailer.Mailer, adapter: Bamboo.LocalAdapter

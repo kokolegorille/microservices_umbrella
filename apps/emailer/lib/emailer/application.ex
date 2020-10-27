@@ -7,7 +7,7 @@ defmodule Emailer.Application do
 
   def start(_type, _args) do
     children = [
-      Emailer.Core.Listener,
+      Emailer.Core.Listener
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

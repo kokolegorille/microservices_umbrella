@@ -7,8 +7,35 @@ defmodule Bff do
   if it comes from the database, an external API or others.
   """
 
+  def create_user_logged_event(user_id, trace_id, attrs) do
+    %{
+      "stream_name" => "identity-#{user_id}",
+      "type" => "User Logged In",
+      "data" => attrs,
+      "metadata" => %{
+        "trace_id" => trace_id,
+        "user_id" => user_id
+      }
+    }
+    |> EventStore.Core.create_event()
+  end
+
+  def create_user_logged_out_event(user_id, trace_id, attrs) do
+    %{
+      "stream_name" => "identity-#{user_id}",
+      "type" => "User Logged Out",
+      "data" => attrs,
+      "metadata" => %{
+        "trace_id" => trace_id,
+        "user_id" => user_id
+      }
+    }
+    |> EventStore.Core.create_event()
+  end
+
   def register_user_command(user_id, trace_id, attrs) do
     attrs = prepare_attrs(attrs)
+
     case Identity.validate_user(attrs) do
       {:ok, _} ->
         %{
@@ -21,6 +48,7 @@ defmodule Bff do
           }
         }
         |> EventStore.Core.create_event()
+
       {:error, changeset} ->
         {:error, changeset}
     end

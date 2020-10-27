@@ -6,7 +6,7 @@ defmodule EventStore.Core.Event do
   @primary_key {:id, :binary_id, autogenerate: true}
 
   # No need for foreign key type...
-  #@foreign_key_type :binary_id
+  # @foreign_key_type :binary_id
   schema "events" do
     field(:stream_name, :string)
     field(:type, :string)

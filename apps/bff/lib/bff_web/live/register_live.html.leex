@@ -1,0 +1,39 @@
+<h1>Register</h1>
+<%= if @pending do %>
+  <%= img_tag Routes.static_path(@socket, "/images/loader.gif") %>
+<% end %>
+<%=
+  f = form_for @changeset,
+  "#",
+  [
+    id: :register_live_form,
+    class: "form",
+    phx_change: :change,
+    phx_submit: :save,
+  ]
+%>
+  <div class="form-group">
+    <label for="inputName">Name</label>
+    <%= text_input f, :name, id: "inputName", class: "form-control" %>
+    <%= error_tag f, :name %>
+  </div>
+
+  <div class="form-group">
+    <label for="inputEmail">Email</label>
+    <%= text_input f, :email, id: "inputEmail", type: :email, class: "form-control" %>
+    <%= error_tag f, :email %>
+    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  </div>
+
+  <div class="form-group">
+    <label for="inputPassword">Password</label>
+    <%= password_input f, :password, value: input_value(f, :password), id: "inputPassword" %>
+  </div>
+
+  <%=
+    submit "Submit",
+      phx_disable_with: "Saving...",
+      class: "btn btn-primary",
+      disabled: not @changeset.valid?
+  %>
+</form>

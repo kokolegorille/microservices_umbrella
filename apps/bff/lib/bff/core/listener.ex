@@ -16,9 +16,13 @@ defmodule Bff.Core.Listener do
   def init(_) do
     Logger.debug(fn -> "#{@name} is starting}" end)
     #
-    # Subscribe to identity commevents, filtering the event by stream_name
+    # Subscribe to identity events, filtering the event by stream_name and type
     #
-    filter_fun = &String.starts_with?(&1.stream_name, "identity-")
+    filter_fun = fn event ->
+      String.starts_with?(event.stream_name, "identity-") and
+        Enum.member?(["User Registered", "User Register Failed"], event.type)
+    end
+
     register(filter_fun)
     {:ok, nil}
   end
@@ -33,10 +37,10 @@ defmodule Bff.Core.Listener do
   end
 
   @impl GenServer
-	def terminate(reason, _state) do
-    Logger.debug(fn -> "#{@name} is stopping : #{inspect reason}" end)
+  def terminate(reason, _state) do
+    Logger.debug(fn -> "#{@name} is stopping : #{inspect(reason)}" end)
     unregister()
-		:ok
+    :ok
   end
 
   defp register(filter_fun), do: EventStore.register(self(), filter_fun)

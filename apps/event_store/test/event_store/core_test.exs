@@ -5,10 +5,10 @@ defmodule EventStore.CoreTest do
   alias EventStore.Core.Event
 
   @valid_attrs %{
-    "stream_name"=>"gooogooo",
-    "type"=>"test",
-    "data"=>%{"fran"=>:wong},
-    "metadata"=>%{"koko"=>:kiki}
+    "stream_name" => "gooogooo",
+    "type" => "test",
+    "data" => %{"fran" => :wong},
+    "metadata" => %{"koko" => :kiki}
   }
 
   describe "event auto increment fields" do

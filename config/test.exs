@@ -25,5 +25,4 @@ config :event_store, EventStore.Repo,
 
 # Emailer
 
-config :emailer, Emailer.Mailer,
-  adapter: Bamboo.TestAdapter
+config :emailer, Emailer.Mailer, adapter: Bamboo.TestAdapter

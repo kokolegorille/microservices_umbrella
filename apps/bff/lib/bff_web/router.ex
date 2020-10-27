@@ -1,7 +1,10 @@
 defmodule BffWeb.Router do
   use BffWeb, :router
 
-  alias BffWeb.Plugs.EnsureTraceId
+  alias BffWeb.Plugs.{
+    EnsureTraceId,
+    EnsureUserId
+  }
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -11,6 +14,7 @@ defmodule BffWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug EnsureTraceId
+    plug EnsureUserId
   end
 
   pipeline :api do
@@ -20,7 +24,17 @@ defmodule BffWeb.Router do
   scope "/", BffWeb do
     pipe_through :browser
 
+    # get("/sessions/:token", SessionController, :create_from_token)
+
+    resources("/sessions", SessionController, only: [:delete], singleton: true) do
+      get("/:token", SessionController, :create_from_token, as: :from_token)
+    end
+
     live "/", PageLive, :index
+
+    live "/session", SessionLive, :index
+
+    live "/register", RegisterLive, :index
   end
 
   # Other scopes may use custom stacks.
