@@ -43,19 +43,19 @@ defmodule BffWeb.RegisterLive do
   end
 
   @impl true
-  def handle_info(%{type: "User Registered", payload: payload}, socket) do
+  def handle_info(%{type: "UserRegistered", payload: payload}, socket) do
     token = TokenHelpers.sign(payload)
 
     socket =
       socket
-      |> put_flash(:info, "User Registered")
+      |> put_flash(:info, "UserRegistered")
       |> redirect(to: Routes.session_from_token_path(socket, :create_from_token, token))
 
     {:noreply, socket}
   end
 
   @impl true
-  def handle_info(%{type: "User Register Failed", payload: payload}, socket) do
+  def handle_info(%{type: "UserRegisterFailed", payload: payload}, socket) do
     changeset =
       Enum.reduce(payload, socket.assigns.changeset, fn {key, value}, acc ->
         Ecto.Changeset.add_error(acc, key, Enum.join(value, ", "))

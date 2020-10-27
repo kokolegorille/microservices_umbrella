@@ -20,7 +20,7 @@ defmodule Bff.Core.Listener do
     #
     filter_fun = fn event ->
       String.starts_with?(event.stream_name, "identity-") and
-        Enum.member?(["User Registered", "User Register Failed"], event.type)
+        Enum.member?(["UserRegistered", "UserRegisterFailed"], event.type)
     end
 
     register(filter_fun)

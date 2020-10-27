@@ -17,8 +17,12 @@ defmodule Identity.Core.Listener do
     Logger.debug(fn -> "#{@name} is starting}" end)
     #
     # Subscribe to identity commands, filtering the event by stream_name
+    # And to email sent
     #
-    filter_fun = &String.starts_with?(&1.stream_name, "identity:command")
+    filter_fun = fn event ->
+      String.starts_with?(event.stream_name, "identity:command") or
+      String.starts_with?(event.stream_name, "sendEmail-")
+    end
     register(filter_fun)
     {:ok, nil}
   end

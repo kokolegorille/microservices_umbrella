@@ -11,6 +11,14 @@ defmodule Identity.Core do
   @order_field :name
 
   #########################
+  # EVENT STORE
+  #########################
+
+  def create_event(event) do
+    EventStore.create_event(event)
+  end
+
+  #########################
   # Authentication
   #########################
 
@@ -28,11 +36,14 @@ defmodule Identity.Core do
 
   defdelegate encrypt_password(password), to: User
 
-  # Private
-
-  defp get_user_by_name(name) do
+  @doc """
+  returns a user by its name.
+  """
+  def get_user_by_name(name) do
     Repo.get_by(User, name: name)
   end
+
+  # Private
 
   defp check_password(user, password) do
     Argon2.check_pass(user, password)

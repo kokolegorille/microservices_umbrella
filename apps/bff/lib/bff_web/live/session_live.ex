@@ -21,7 +21,9 @@ defmodule BffWeb.SessionLive do
   def handle_event("save", %{"session" => %{"name" => name, "password" => password} = params}, socket) do
     socket = case Identity.authenticate(name, password) do
       {:ok, user} ->
-        Bff.create_user_logged_event(user.id, socket.assigns.trace_id, params)
+        Task.start(fn ->
+          Bff.create_user_logged_event(user.id, socket.assigns.trace_id, params)
+        end)
         token = TokenHelpers.sign(user)
         socket
         |> put_flash(:info, "User Logged in")

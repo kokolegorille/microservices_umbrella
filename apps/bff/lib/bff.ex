@@ -7,31 +7,35 @@ defmodule Bff do
   if it comes from the database, an external API or others.
   """
 
+  # EVENTS
+
   def create_user_logged_event(user_id, trace_id, attrs) do
     %{
-      "stream_name" => "identity-#{user_id}",
-      "type" => "User Logged In",
-      "data" => attrs,
+      "stream_name" => "authentication-#{user_id}",
+      "type" => "UserLoggedIn",
+      "data" => filter_password(attrs),
       "metadata" => %{
         "trace_id" => trace_id,
         "user_id" => user_id
       }
     }
-    |> EventStore.Core.create_event()
+    |> EventStore.create_event()
   end
 
   def create_user_logged_out_event(user_id, trace_id, attrs) do
     %{
-      "stream_name" => "identity-#{user_id}",
-      "type" => "User Logged Out",
+      "stream_name" => "authentication-#{user_id}",
+      "type" => "UserLoggedOut",
       "data" => attrs,
       "metadata" => %{
         "trace_id" => trace_id,
         "user_id" => user_id
       }
     }
-    |> EventStore.Core.create_event()
+    |> EventStore.create_event()
   end
+
+  # COMMANDS
 
   def register_user_command(user_id, trace_id, attrs) do
     attrs = prepare_attrs(attrs)
@@ -47,18 +51,24 @@ defmodule Bff do
             "user_id" => user_id
           }
         }
-        |> EventStore.Core.create_event()
+        |> EventStore.create_event()
 
       {:error, changeset} ->
         {:error, changeset}
     end
   end
 
+  # Private
+
   defp prepare_attrs(attrs) do
     attrs
     |> Map.put("id", Ecto.UUID.generate())
     |> Map.put("password_hash", encrypt_password(attrs["password"]))
-    |> Map.delete("password")
+    |> filter_password()
+  end
+
+  defp filter_password(attrs) do
+    Map.update(attrs, "password", "--[FILTERED]--", fn _ -> "--[FILTERED]--" end)
   end
 
   defp encrypt_password(password) do

@@ -19,6 +19,8 @@ defmodule Identity do
 
   defdelegate get_user(id, opts \\ []), to: Core
 
+  defdelegate get_user_by_name(name), to: Core
+
   defdelegate validate_user(dto), to: Core
 
   defdelegate validate_user(user, dto), to: Core

@@ -16,11 +16,10 @@ defmodule Emailer.Core.Listener do
   def init(_) do
     Logger.debug(fn -> "#{@name} is starting}" end)
     #
-    # Subscribe to identity events, filtering the event by stream_name and type
+    # Subscribe to send email command
     #
     filter_fun = fn event ->
-      String.starts_with?(event.stream_name, "identity-") and
-        event.type == "User Registered"
+      String.starts_with?(event.stream_name, "sendEmail:command-")
     end
 
     register(filter_fun)
