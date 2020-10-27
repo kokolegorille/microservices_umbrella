@@ -11,21 +11,33 @@
   </head>
   <body>
     <header>
-      <section class="container">
-        <nav role="navigation">
-          <ul class="menu">
-            <li><%= link "Home", to: Routes.page_path(@conn, :index) %></li>
-            <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-              <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
-            <% end %>
+      <section>
+        <nav role="navigation" class="navbar navbar-expand-md navbar-dark bg-dark">
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item">
+                <%= link "Home", to: Routes.page_path(@conn, :index), class: "nav-link" %>
+              </li>
+              <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
+                <li class="nav-item">
+                  <%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home), class: "nav-link" %>
+                </li>
+              <% end %>
 
-            <%= if @user_id do %>
-              <li><%= link("Logout", to: Routes.session_path(@conn, :delete), method: :delete, title: @user_id) %></li>
-            <% else %>
-              <li><%= link("Login", to: Routes.session_path(@conn, :index)) %></li>
-              <li><%= link("Register", to: Routes.register_path(@conn, :index)) %></li>
-            <% end %>
-          </ul>
+              <%= if @user_id do %>
+                <li class="nav-item"
+                  ><%= link("Logout", to: Routes.session_path(@conn, :delete), method: :delete, title: @user_id, class: "nav-link") %>
+                </li>
+              <% else %>
+                <li class="nav-item">
+                  <%= link("Login", to: Routes.session_path(@conn, :index), class: "nav-link") %>
+                </li>
+                <li class="nav-item">
+                  <%= link("Register", to: Routes.register_path(@conn, :index), class: "nav-link") %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
         </nav>
       </section>
     </header>

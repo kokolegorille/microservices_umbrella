@@ -1,3 +1,34 @@
-<section class="phx-hero">
-  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
-</section>
+<h1><%= gettext "Events" %></h1>
+
+<%= unless Enum.empty?(@events) do %>
+  <table class="table tabls-sm table-hover table-bordered">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>ID</th>
+        <th>Pos</th>
+        <th>Stream Name</th>
+        <th>Type</th>
+        <th>Metadata</th>
+        <th>Data</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for event <- @events do %>
+        <tr>
+          <td><%= event.global_position %></td>
+          <td><%= event.id %></td>
+          <td><%= event.position %></td>
+          <td><%= event.stream_name %></td>
+          <td><%= event.type %></td>
+          <td>
+            <pre><code><%= display_json event.metadata %></code></pre>
+          </td>
+          <td>
+            <pre><code><%= display_json event.data %></code></pre>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
