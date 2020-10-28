@@ -13,18 +13,16 @@ defmodule BffWeb.PageLive do
   end
 
   defp display_json(json) do
-    Enum.map(json, fn {key, value} ->
-      "#{key}=#{truncate value}\r\n"
+    Enum.map(json, fn
+      {key, value} when is_binary(value) -> "#{key}=#{truncate value}\r\n"
+      {key, value} when is_list(value) -> "#{key}=#{truncate Enum.join(value, ", ")}\r\n"
+      {key, nil} -> "#{key}=nil"
     end)
   end
 
   defp truncate(input, length \\ 30)
 
-  defp truncate(nil, _length) do
-    "nil"
-  end
-
-  defp truncate(input, length) do
+  defp truncate(input, length) when is_binary(input) do
     if String.length(input) > length do
       String.slice(input, 0..length) <> "..."
     else

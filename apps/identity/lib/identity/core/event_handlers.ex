@@ -4,7 +4,8 @@ defmodule Identity.Core.EventHandlers do
   alias Identity.{Core, Projection}
 
   def handle(%{type: "Register", data: data, metadata: metadata} = _command) do
-    %{"trace_id" => trace_id, "user_id" => user_id} = metadata
+    %{"id" => user_id} = data
+    %{"trace_id" => trace_id} = metadata
 
     user_id
     |> Projection.load_identity()
@@ -61,7 +62,18 @@ defmodule Identity.Core.EventHandlers do
           end)
       end
     else
-      Logger.info("User #{user_id} already registered")
+      Task.start(fn ->
+        %{
+          "stream_name" => "identity-#{data["id"]}",
+          "type" => "UserRegisterFailed",
+          "data" => %{"name" => "Name already taken"},
+          "metadata" => %{
+            "trace_id" => trace_id,
+            "user_id" => user_id
+          }
+        }
+        |> Core.create_event()
+      end)
     end
   end
 
