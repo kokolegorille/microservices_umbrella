@@ -1,12 +1,15 @@
 defmodule Identity.Core.EventHandlers do
   require Logger
 
-  alias Identity.Core
+  alias Identity.{Core, Projection}
 
-  def handle(%{stream_name: stream_name, type: "Register", data: data} = command) do
-    if String.starts_with?(stream_name, "identity:command") do
-      %{metadata: %{"trace_id" => trace_id, "user_id" => user_id}} = command
+  def handle(%{type: "Register", data: data, metadata: metadata} = _command) do
+    %{"trace_id" => trace_id, "user_id" => user_id} = metadata
 
+    user_id
+    |> Projection.load_identity()
+    |> Projection.ensure_not_registered()
+    |> if do
       case Core.create_user(data) do
         {:ok, user} ->
           Task.start(fn ->
@@ -57,6 +60,8 @@ defmodule Identity.Core.EventHandlers do
             |> Core.create_event()
           end)
       end
+    else
+      Logger.info("User #{user_id} already registered")
     end
   end
 
