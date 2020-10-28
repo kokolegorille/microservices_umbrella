@@ -22,7 +22,10 @@ defmodule BffWeb.SessionController do
   def delete(conn, _params) do
     trace_id = get_session(conn, :trace_id)
     user_id = conn.assigns.user_id
-    Bff.create_user_logged_out_event(user_id, trace_id, %{"id" => user_id})
+
+    Task.start(fn ->
+      Bff.create_user_logged_out_event(user_id, trace_id, %{"id" => user_id})
+    end)
 
     conn
     |> clear_session()

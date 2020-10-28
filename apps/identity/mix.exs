@@ -27,6 +27,7 @@ defmodule Identity.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:authentication, in_umbrella: true},
       {:event_store, in_umbrella: true}
     ]
   end

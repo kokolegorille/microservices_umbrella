@@ -17,33 +17,6 @@ defmodule BffWeb.SessionLive do
     {:noreply, assign(socket, changeset: changeset)}
   end
 
-  # @impl true
-  # def handle_event("save", %{"session" => %{"name" => name, "password" => password} = params}, socket) do
-  #   socket = case Identity.authenticate(name, password) do
-  #     {:ok, user} ->
-  #       Task.start(fn ->
-  #         Bff.create_user_logged_event(user.id, socket.assigns.trace_id, params)
-  #       end)
-  #       token = TokenHelpers.sign(user)
-  #       socket
-  #       |> put_flash(:info, "User Logged in")
-  #       |> redirect(to: Routes.session_from_token_path(socket, :create_from_token, token))
-
-  #     {:error, reason} ->
-  #       case Identity.get_user_by_name(name) do
-  #         nil ->
-  #           nil
-  #         user ->
-  #           Task.start(fn ->
-  #             Bff.create_user_login_failed_event(user.id, socket.assigns.trace_id, params)
-  #           end)
-  #       end
-  #       put_flash(socket, :error, "User could not log in #{inspect reason}")
-  #   end
-
-  #   {:noreply, socket}
-  # end
-
   @impl true
   def handle_event(
         "save",

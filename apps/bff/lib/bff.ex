@@ -50,54 +50,6 @@ defmodule Bff do
 
   # COMMANDS
 
-  # def register_user_command(user_id, trace_id, attrs) do
-  #   attrs = prepare_attrs(attrs)
-  #   name = attrs["name"]
-  #   email = attrs["email"]
-  #   id = attrs["id"]
-
-  #   # Ensure uniqueness through authentication view
-  #   validation_tuple = {
-  #     Authentication.ensure_name_uniqueness(name),
-  #     Authentication.ensure_email_uniqueness(email)
-  #   }
-
-  #   {type, data, is_command?} =
-  #     case validation_tuple do
-  #       {true, true} ->
-  #         {"Register", attrs, true}
-
-  #       {true, false} ->
-  #         {"UserRegisterFailed", %{email: ["Email already taken"]}, false}
-
-  #       {false, true} ->
-  #         {"UserRegisterFailed", %{name: ["Name already taken"]}, false}
-
-  #       {false, false} ->
-  #         {
-  #           "UserRegisterFailed",
-  #           %{email: ["Email already taken"], name: ["Name already taken"]},
-  #           false
-  #         }
-  #     end
-
-  #   stream_name =
-  #     if is_command?,
-  #       do: "identity:command-#{id}",
-  #       else: "identity-#{id}"
-
-  #   %{
-  #     "stream_name" => stream_name,
-  #     "type" => type,
-  #     "data" => data,
-  #     "metadata" => %{
-  #       "trace_id" => trace_id,
-  #       "user_id" => user_id
-  #     }
-  #   }
-  #   |> EventStore.create_event()
-  # end
-
   def register_user_command(user_id, trace_id, attrs) do
     attrs = prepare_attrs(attrs)
     id = attrs["id"]
