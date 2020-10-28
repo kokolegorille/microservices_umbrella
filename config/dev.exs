@@ -75,15 +75,15 @@ config :event_store, EventStore.Repo,
   hostname: "localhost",
   pool_size: 10
 
-# IDENTITY
+# Emailer
 
-config :identity, Identity.Repo,
-  database: "identity_dev",
+config :emailer, Emailer.Mailer, adapter: Bamboo.LocalAdapter
+
+# AUTHENTICATION
+
+config :authentication, Authentication.Repo,
+  database: "authentication_dev",
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
   pool_size: 10
-
-# Emailer
-
-config :emailer, Emailer.Mailer, adapter: Bamboo.LocalAdapter

@@ -32,11 +32,11 @@ config :event_store, EventStore.Repo, migration_primary_key: [name: :id, type: :
 
 config :postgrex, :json_library, Jason
 
-# Identity
+# Authentication
 
-config :identity,
-  ecto_repos: [Identity.Repo]
+config :authentication,
+  ecto_repos: [Authentication.Repo]
 
-config :identity, Identity.Repo, migration_primary_key: [name: :id, type: :binary_id]
+config :authentication, Authentication.Repo, migration_primary_key: [name: :id, type: :binary_id]
 
 import_config "#{Mix.env()}.exs"

@@ -47,7 +47,7 @@ defmodule BffWeb.RegisterLive do
 
     socket =
       socket
-      |> put_flash(:info, "UserRegistered")
+      |> put_flash(:info, "User Registered")
       |> redirect(to: Routes.session_from_token_path(socket, :create_from_token, token))
 
     {:noreply, socket}

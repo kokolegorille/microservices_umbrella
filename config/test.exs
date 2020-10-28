@@ -9,13 +9,7 @@ config :bff, BffWeb.Endpoint,
 # Print only warnings and errors during test
 config :logger, level: :warn
 
-config :identity, Identity.Repo,
-  database: "identity_test",
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
-
+# EVENT STORE
 config :event_store, EventStore.Repo,
   database: "event_store_test",
   username: "postgres",
@@ -23,6 +17,13 @@ config :event_store, EventStore.Repo,
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
-# Emailer
+# AUTHENTICATION
+config :authentication, Authentication.Repo,
+  database: "authentication_test",
+  username: "postgres",
+  password: "postgres",
+  hostname: "localhost",
+  pool: Ecto.Adapters.SQL.Sandbox
 
+# Emailer
 config :emailer, Emailer.Mailer, adapter: Bamboo.TestAdapter

@@ -49,23 +49,36 @@ defmodule Bff do
 
   def register_user_command(user_id, trace_id, attrs) do
     attrs = prepare_attrs(attrs)
+    name = attrs["name"]
+    email = attrs["email"]
+    id = attrs["id"]
 
-    case Identity.validate_user(attrs) do
-      {:ok, _} ->
-        %{
-          "stream_name" => "identity:command-#{attrs["id"]}",
-          "type" => "Register",
-          "data" => attrs,
-          "metadata" => %{
-            "trace_id" => trace_id,
-            "user_id" => user_id
-          }
-        }
-        |> EventStore.create_event()
+    # Ensure uniqueness through authentication view
+    validation_tuple = {
+      Authentication.ensure_name_uniqueness(name),
+      Authentication.ensure_email_uniqueness(email)
+    }
 
-      {:error, changeset} ->
-        {:error, changeset}
+    {type, data} = case validation_tuple do
+      {true, true} ->
+        {"Register", attrs}
+      {true, false} ->
+        {"UserRegisterFailed", %{email: ["Email already taken"]}}
+      {false, true} ->
+        {"UserRegisterFailed", %{name: ["Name already taken"]}}
+      {false, false} ->
+        {"UserRegisterFailed", %{email: ["Email already taken"], name: ["Name already taken"]}}
     end
+
+    %{
+      "stream_name" => "identity:command-#{id}",
+      "type" => type,
+      "data" => data,
+      "metadata" => %{
+        "trace_id" => trace_id,
+        "user_id" => user_id
+      }
+    } |> EventStore.create_event()
   end
 
   # Private
@@ -82,7 +95,7 @@ defmodule Bff do
   end
 
   defp encrypt_password(password) do
-    Identity.encrypt_password(password)
+    Authentication.encrypt_password(password)
   end
 
   defp create_event(event) do

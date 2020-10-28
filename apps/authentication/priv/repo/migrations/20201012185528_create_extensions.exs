@@ -1,4 +1,4 @@
-defmodule Identity.Repo.Migrations.CreateExtensions do
+defmodule Authentication.Repo.Migrations.CreateExtensions do
   use Ecto.Migration
 
   def change do

@@ -12,7 +12,6 @@ defmodule Identity.MixProject do
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps()
     ]
   end
@@ -28,26 +27,14 @@ defmodule Identity.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ecto, "~> 3.5"},
-      {:ecto_sql, "~> 3.5"},
-      {:postgrex, "~> 0.15.6"},
-      {:argon2_elixir, "~> 2.3"},
-      {:ex_machina, "~> 2.4", only: :test},
-      #
       {:event_store, in_umbrella: true}
     ]
   end
 
   defp aliases do
     [
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-      "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+      # Add this for umbrella global reset
+      "ecto.reset": []
     ]
   end
-
-  # This makes sure your factory and any other modules in test/support are compiled
-  # when in the test environment.
-  defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_), do: ["lib"]
 end
