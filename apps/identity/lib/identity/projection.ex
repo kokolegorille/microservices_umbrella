@@ -3,7 +3,7 @@ defmodule Identity.Projection do
 
   # To replay a list of commands.
   # events = Identity.Projection.load_identity_commands()
-  # Enum.map(events, fn command -> Identity.Core.EventHandlers.handle(command) end)
+  # Enum.map(events, &Identity.Core.EventHandlers.handle(&1))
   def load_identity_commands() do
     filter = [stream_name: "identity:command-"]
     EventStore.list_events(order: :asc, filter: filter)

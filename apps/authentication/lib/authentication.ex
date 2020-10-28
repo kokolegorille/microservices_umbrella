@@ -18,6 +18,8 @@ defmodule Authentication do
 
   defdelegate get_user_by_name(name), to: Core
 
+  # Aggregator
+
   defdelegate replay(), to: Core
 
   defdelegate load_identity_events(), to: Core

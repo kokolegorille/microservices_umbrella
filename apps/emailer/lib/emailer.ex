@@ -4,6 +4,7 @@ defmodule Emailer do
   """
 
   alias __MODULE__.Core.{Mailer, Email}
+  alias __MODULE__.Projection
 
   @doc """
   Send an email directly.
@@ -46,4 +47,6 @@ defmodule Emailer do
       }
   """
   defdelegate build_email(opts \\ []), to: Email
+
+  defdelegate replay, to: Projection
 end

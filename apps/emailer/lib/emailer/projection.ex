@@ -1,9 +1,12 @@
 defmodule Emailer.Projection do
   alias __MODULE__.Email
 
-  # To replay a list of commands.
-  # events = Emailer.Projection.load_email_commands()
-  # Enum.map(events, fn command -> Emailer.Core.EventHandlers.handle(command) end)
+  # Replay service commands
+  def replay do
+    Enum.map(load_email_commands(), &Emailer.Core.EventHandlers.handle(&1))
+  end
+
+  # Returns commands for the service
   def load_email_commands() do
     filter = [stream_name: "sendEmail:command-"]
     EventStore.list_events(order: :asc, filter: filter)
