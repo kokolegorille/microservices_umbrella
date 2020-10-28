@@ -18,8 +18,7 @@ defmodule Bff do
         "trace_id" => trace_id,
         "user_id" => user_id
       }
-    }
-    |> EventStore.create_event()
+    } |> create_event()
   end
 
   def create_user_logged_out_event(user_id, trace_id, attrs) do
@@ -31,8 +30,19 @@ defmodule Bff do
         "trace_id" => trace_id,
         "user_id" => user_id
       }
-    }
-    |> EventStore.create_event()
+    } |> create_event()
+  end
+
+  def create_user_login_failed_event(user_id, trace_id, attrs) do
+    %{
+      "stream_name" => "authentication-#{user_id}",
+      "type" => "UserLoginFailed",
+      "data" => filter_password(attrs),
+      "metadata" => %{
+        "trace_id" => trace_id,
+        "user_id" => user_id
+      }
+    } |> create_event()
   end
 
   # COMMANDS
@@ -73,5 +83,9 @@ defmodule Bff do
 
   defp encrypt_password(password) do
     Identity.encrypt_password(password)
+  end
+
+  defp create_event(event) do
+    EventStore.create_event(event)
   end
 end

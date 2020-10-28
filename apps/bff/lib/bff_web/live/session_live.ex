@@ -30,7 +30,15 @@ defmodule BffWeb.SessionLive do
         |> redirect(to: Routes.session_from_token_path(socket, :create_from_token, token))
 
       {:error, reason} ->
-        put_flash(socket, :error, "User could not log in #{inspect reason}")
+        case Identity.get_user_by_name(name) do
+          nil ->
+            put_flash(socket, :error, "User could not log in #{inspect reason}")
+          user ->
+            Task.start(fn ->
+              Bff.create_user_login_failed_event(user.id, socket.assigns.trace_id, params)
+            end)
+            put_flash(socket, :error, "User could not log in #{inspect reason}")
+        end
     end
 
     {:noreply, socket}
