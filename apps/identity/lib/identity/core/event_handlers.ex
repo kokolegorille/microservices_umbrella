@@ -10,7 +10,7 @@ defmodule Identity.Core.EventHandlers do
     user = Projection.load_identity(user_id)
     if Projection.ensure_not_registered(user) do
       Task.start(fn ->
-        stream_name = "identity-#{user.id}"
+        stream_name = "identity-#{user_id}"
         %{
           "stream_name" => stream_name,
           "type" => "UserRegistered",
