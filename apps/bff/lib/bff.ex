@@ -18,7 +18,8 @@ defmodule Bff do
         "trace_id" => trace_id,
         "user_id" => user_id
       }
-    } |> create_event()
+    }
+    |> create_event()
   end
 
   def create_user_logged_out_event(user_id, trace_id, attrs) do
@@ -30,7 +31,8 @@ defmodule Bff do
         "trace_id" => trace_id,
         "user_id" => user_id
       }
-    } |> create_event()
+    }
+    |> create_event()
   end
 
   def create_user_login_failed_event(user_id, trace_id, attrs) do
@@ -42,43 +44,75 @@ defmodule Bff do
         "trace_id" => trace_id,
         "user_id" => user_id
       }
-    } |> create_event()
+    }
+    |> create_event()
   end
 
   # COMMANDS
 
+  # def register_user_command(user_id, trace_id, attrs) do
+  #   attrs = prepare_attrs(attrs)
+  #   name = attrs["name"]
+  #   email = attrs["email"]
+  #   id = attrs["id"]
+
+  #   # Ensure uniqueness through authentication view
+  #   validation_tuple = {
+  #     Authentication.ensure_name_uniqueness(name),
+  #     Authentication.ensure_email_uniqueness(email)
+  #   }
+
+  #   {type, data, is_command?} =
+  #     case validation_tuple do
+  #       {true, true} ->
+  #         {"Register", attrs, true}
+
+  #       {true, false} ->
+  #         {"UserRegisterFailed", %{email: ["Email already taken"]}, false}
+
+  #       {false, true} ->
+  #         {"UserRegisterFailed", %{name: ["Name already taken"]}, false}
+
+  #       {false, false} ->
+  #         {
+  #           "UserRegisterFailed",
+  #           %{email: ["Email already taken"], name: ["Name already taken"]},
+  #           false
+  #         }
+  #     end
+
+  #   stream_name =
+  #     if is_command?,
+  #       do: "identity:command-#{id}",
+  #       else: "identity-#{id}"
+
+  #   %{
+  #     "stream_name" => stream_name,
+  #     "type" => type,
+  #     "data" => data,
+  #     "metadata" => %{
+  #       "trace_id" => trace_id,
+  #       "user_id" => user_id
+  #     }
+  #   }
+  #   |> EventStore.create_event()
+  # end
+
   def register_user_command(user_id, trace_id, attrs) do
     attrs = prepare_attrs(attrs)
-    name = attrs["name"]
-    email = attrs["email"]
     id = attrs["id"]
-
-    # Ensure uniqueness through authentication view
-    validation_tuple = {
-      Authentication.ensure_name_uniqueness(name),
-      Authentication.ensure_email_uniqueness(email)
-    }
-
-    {type, data} = case validation_tuple do
-      {true, true} ->
-        {"Register", attrs}
-      {true, false} ->
-        {"UserRegisterFailed", %{email: ["Email already taken"]}}
-      {false, true} ->
-        {"UserRegisterFailed", %{name: ["Name already taken"]}}
-      {false, false} ->
-        {"UserRegisterFailed", %{email: ["Email already taken"], name: ["Name already taken"]}}
-    end
+    stream_name = "identity:command-#{id}"
 
     %{
-      "stream_name" => "identity:command-#{id}",
-      "type" => type,
-      "data" => data,
+      "stream_name" => stream_name,
+      "type" => "Register",
+      "data" => attrs,
       "metadata" => %{
         "trace_id" => trace_id,
         "user_id" => user_id
       }
-    } |> EventStore.create_event()
+    }
+    |> EventStore.create_event()
   end
 
   # Private

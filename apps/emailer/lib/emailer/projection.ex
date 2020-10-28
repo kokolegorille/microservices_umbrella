@@ -23,10 +23,12 @@ defmodule Emailer.Projection do
         Enum.reduce(data, acc, fn
           {key, value}, email when key in ~w(id to subject html to) ->
             Map.put(email, String.to_atom(key), value)
+
           _, email ->
             email
         end)
         |> Map.put(:is_sent, true)
+
       _, acc ->
         acc
     end)

@@ -44,18 +44,27 @@ defmodule Authentication.Core do
 
   defdelegate encrypt_password(password), to: User
 
+  # @doc """
+  # Check user name and email uniqueness
+  # """
+  # def ensure_name_uniqueness(name) do
+  #   query = from(p in User, where: p.name == ^name)
+  #   Enum.empty?(Repo.all(query))
+  # end
+
+  # def ensure_email_uniqueness(email) do
+  #   query = from(p in User, where: p.email == ^email)
+  #   Enum.empty?(Repo.all(query))
+  # end
+
   @doc """
-  Check user name and email uniqueness
+  Check field uniqueness
   """
-  def ensure_name_uniqueness(name) do
-    query = from(p in User, where: p.name == ^name)
-    Enum.empty? Repo.all(query)
+  def ensure_uniqueness(field, value) do
+    query = from(p in User, where: field(p, ^field) == ^value)
+    Enum.empty?(Repo.all(query))
   end
 
-  def ensure_email_uniqueness(email) do
-    query = from(p in User, where: p.email == ^email)
-    Enum.empty? Repo.all(query)
-  end
 
   @doc """
   returns a user by its name.

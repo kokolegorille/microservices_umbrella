@@ -6,9 +6,7 @@ defmodule Authentication do
 
   defdelegate authenticate(name, password), to: Core
 
-  defdelegate ensure_name_uniqueness(name), to: Core
-
-  defdelegate ensure_email_uniqueness(email), to: Core
+  defdelegate ensure_uniqueness(field, value), to: Core
 
   defdelegate encrypt_password(password), to: Core
 

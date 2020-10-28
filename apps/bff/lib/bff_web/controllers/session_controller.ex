@@ -23,6 +23,7 @@ defmodule BffWeb.SessionController do
     trace_id = get_session(conn, :trace_id)
     user_id = conn.assigns.user_id
     Bff.create_user_logged_out_event(user_id, trace_id, %{"id" => user_id})
+
     conn
     |> clear_session()
     |> put_flash(:info, gettext("Sign out successfully !"))

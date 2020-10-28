@@ -21,6 +21,7 @@ defmodule Authentication.Core.Listener do
     filter_fun = fn event ->
       String.starts_with?(event.stream_name, "identity-")
     end
+
     register(filter_fun)
     {:ok, nil}
   end

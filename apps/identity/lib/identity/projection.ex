@@ -17,13 +17,16 @@ defmodule Identity.Projection do
 
     Enum.reduce(events, %User{}, fn
       %{type: "UserRegistered", data: data} = _event, acc ->
-        Enum.reduce(data, acc, fn
+        identity = Enum.reduce(data, acc, fn
           {key, value}, user when key in ~w(id name email) ->
             Map.put(user, String.to_atom(key), value)
+
           _, user ->
             user
         end)
-        |> Map.put(:is_registered, true)
+
+        %{identity | is_registered: true}
+
       _, acc ->
         acc
     end)

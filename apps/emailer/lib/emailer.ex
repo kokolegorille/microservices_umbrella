@@ -49,4 +49,6 @@ defmodule Emailer do
   defdelegate build_email(opts \\ []), to: Email
 
   defdelegate replay, to: Projection
+
+  defdelegate load_email_commands, to: Projection
 end
