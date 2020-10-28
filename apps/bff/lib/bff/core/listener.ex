@@ -18,10 +18,14 @@ defmodule Bff.Core.Listener do
     #
     # Subscribe to identity events, filtering the event by stream_name and type
     #
-    filter_fun = fn event ->
-      String.starts_with?(event.stream_name, "identity-") and
-        Enum.member?(["UserRegistered", "UserRegisterFailed"], event.type)
-    end
+
+    # filter_fun = fn event ->
+    #   String.starts_with?(event.stream_name, "identity-") and
+    #     Enum.member?(["UserRegistered", "UserRegisterFailed"], event.type)
+    # end
+
+    # Register to all events
+    filter_fun = fn _ -> true end
 
     register(filter_fun)
     {:ok, nil}

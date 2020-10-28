@@ -1,0 +1,47 @@
+<div class="d-flex justify-content-center h-100">
+  <div class="card">
+    <div class="card-header">
+      <h1>Login</h1>
+
+      <ul class="nav">
+        <li class="nav-item">
+          <%= link("Login", to: Routes.session_path(@socket, :index), class: "nav-link disabled") %>
+        </li>
+        <li class="nav-item">
+          <%= link("Register", to: Routes.register_path(@socket, :index), class: "nav-link") %>
+        </li>
+      </ul>
+
+    </div>
+    <div class="card-body">
+      <%=
+        f = form_for @changeset,
+        "#",
+        [
+          id: :login_live_form,
+          class: "form",
+          phx_change: :change,
+          phx_submit: :save,
+        ]
+      %>
+        <div class="form-group">
+          <label for="inputName">Name</label>
+          <%= text_input f, :name, id: "inputName", class: "form-control" %>
+          <%= error_tag f, :name %>
+        </div>
+
+        <div class="form-group">
+          <label for="inputPassword">Password</label>
+          <%= password_input f, :password, value: input_value(f, :password), id: "inputPassword", class: "form-control" %>
+        </div>
+
+        <%=
+          submit "Submit",
+            phx_disable_with: "Saving...",
+            class: "btn btn-primary",
+            disabled: not @changeset.valid?
+        %>
+      </form>
+    </div>
+  </div>
+</div>

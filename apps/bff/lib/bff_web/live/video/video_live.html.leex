@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="col-8">
+        <h1>Videos</h1>
+    </div>
+    <div class="col-4">
+        <div class="card">
+            <div class="card-header">
+            <h1>
+                Video
+                <%= if @pending do %>
+                <%= img_tag Routes.static_path(@socket, "/images/loader.gif") %>
+                <% end %>
+            </h1>
+            </div>
+            <div class="card-body">
+
+            <%=
+                f = form_for @changeset,
+                "#",
+                [
+                id: :video_live_form,
+                class: "form",
+                phx_change: :change,
+                phx_submit: :save,
+                multipart: true
+                ]
+            %>
+                <div class="form-group">
+                    <label for="inputName">Video</label>
+                    <%= file_input f, :video, id: "inputVideo", class: "form-control" %>
+                    <div><%= error_tag f, :video %></div>
+                </div>
+                <%=
+                submit "Submit",
+                    phx_disable_with: "Saving...",
+                    class: "btn btn-primary",
+                    disabled: not @changeset.valid?
+                %>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>

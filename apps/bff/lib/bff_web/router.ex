@@ -32,7 +32,11 @@ defmodule BffWeb.Router do
 
     live "/", PageLive, :index
 
-    live "/session", SessionLive, :index
+    live "/videos", VideoLive, :index
+
+    live "/events", EventLive, :index
+
+    live "/login", SessionLive, :index
 
     live "/register", RegisterLive, :index
   end

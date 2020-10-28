@@ -13,9 +13,9 @@
         <th>Data</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="events" phx-update="prepend">
       <%= for event <- @events do %>
-        <tr>
+        <tr id="<%= event.id %>">
           <td><%= event.global_position %></td>
           <td><%= event.id %></td>
           <td><%= event.position %></td>

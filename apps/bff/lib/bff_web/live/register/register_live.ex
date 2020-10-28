@@ -10,7 +10,6 @@ defmodule BffWeb.RegisterLive do
   @impl true
   def mount(_params, %{"trace_id" => trace_id} = _session, socket) do
     if connected?(socket), do: subscribe("trace_id:#{trace_id}")
-
     {:ok, assign(socket, trace_id: trace_id)}
   end
 

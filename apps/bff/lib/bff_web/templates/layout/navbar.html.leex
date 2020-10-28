@@ -1,12 +1,22 @@
 <nav role="navigation" class="navbar navbar-expand navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Logo</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
+    <%= link "CQRS/ES", to: Routes.page_path(@conn, :index), class: "navbar-brand" %>
+    <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-        <%= link "Home", to: Routes.page_path(@conn, :index), class: "nav-link" %>
+            <%= link "Videos", to: Routes.video_path(@conn, :index), class: "nav-link" %>
+        </li>
+        <li class="nav-item">
+            <%= link "Events", to: Routes.event_path(@conn, :index), class: "nav-link" %>
         </li>
         <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
         <li class="nav-item">
@@ -15,14 +25,19 @@
         <% end %>
 
         <%= if @user_id do %>
-            <li class="nav-item"
-                ><%= link("Logout", to: Routes.session_path(@conn, :delete), method: :delete, title: @user_id, class: "nav-link") %>
+            <li class="nav-item">
+            <%=
+                link("Logout",
+                    to: Routes.session_path(@conn, :delete),
+                    method: :delete,
+                    title: @user_id,
+                    class: "nav-link") %>
             </li>
-            <% else %>
+        <% else %>
             <li class="nav-item">
                 <%= link("Login", to: Routes.session_path(@conn, :index), class: "nav-link") %>
             </li>
-            <li class="nav-item">
+           <li class="nav-item">
                 <%= link("Register", to: Routes.register_path(@conn, :index), class: "nav-link") %>
             </li>
         <% end %>

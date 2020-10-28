@@ -2,7 +2,7 @@ defmodule Identity.Core.User do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @derive {Jason.Encoder, only: ~w(id name email)a}
+  @derive {Jason.Encoder, only: ~w(id name email password_hash)a}
   @timestamps_opts type: :utc_datetime
   @primary_key {:id, :binary_id, autogenerate: false}
   @foreign_key_type :binary_id
