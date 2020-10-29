@@ -37,3 +37,9 @@ config :bff, BffWeb.Endpoint,
     transport_options: [socket_opts: [:inet6]]
   ],
   secret_key_base: secret_key_base
+
+#
+uploads =
+  System.get_env("UPLOADS") || "/home/admin/uploads"
+
+config :bff, uploads_directory: uploads

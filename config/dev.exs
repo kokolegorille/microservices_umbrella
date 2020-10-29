@@ -87,3 +87,6 @@ config :authentication, Authentication.Repo,
   password: "postgres",
   hostname: "localhost",
   pool_size: 10
+
+  # Video
+  config :bff, uploads_directory: "/home/sqrt/DATA_2020/uploads_bff"

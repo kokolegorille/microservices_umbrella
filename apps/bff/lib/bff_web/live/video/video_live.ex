@@ -2,21 +2,17 @@ defmodule BffWeb.VideoLive do
   use BffWeb, :live_view
   require Logger
 
-  alias Bff.Schemas
+  alias Bff.{Schemas, Uploads}
   alias Bff.Schemas.Video
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, socket}
-    # {:ok,
-    #   socket
-    #   |> assign(:uploaded_files, [])
-    #   |> allow_upload(:video,
-    #     accept: ~w(.mp4),
-    #     max_entries: 5,
-    #     max_file_size: 10_000_000
-    #   )
-    # }
+  def mount(_params, %{"trace_id" => trace_id} = session, socket) do
+    {
+      :ok,
+      socket
+      |> assign(trace_id: trace_id)
+      |> assign(user_id: session["user_id"])
+    }
   end
 
   @impl true
@@ -33,12 +29,7 @@ defmodule BffWeb.VideoLive do
 
   @impl true
   def handle_event("save", %{"video" => params}, socket) do
-    # # No need to wait for answer
-    # Task.start(fn ->
-    #   Bff.register_user_command(nil, socket.assigns.trace_id, params)
-    # end)
-
-    IO.inspect(params, label: "PARAMS")
+    id = Ecto.UUID.generate()
 
     # https://github.com/phoenixframework/phoenix_live_view/issues/104
     # As of now file upload is not supported yet in liveview.
@@ -47,16 +38,36 @@ defmodule BffWeb.VideoLive do
 
     # Remove b64 header
     # data:video/mp4;base64,
-
     base64 = params["upload_base64"]
     |> String.split(",", parts: 2)
     |> List.last()
 
     bin = Base.decode64!(base64)
 
-    file_path = "/tmp/file.mp4"
+    filename = params["upload_base64_filename"]
+    path = Uploads.get_path(id)
+    full_path = "#{path}#{filename}"
 
-    File.write(file_path, bin)
+    user_id = socket.assigns.user_id
+
+    File.write(full_path, bin)
+
+    video_params = %{
+      "id" => id,
+      "owner_id" => user_id,
+      "filename" => filename,
+      "path" => path,
+    }
+    |> Map.merge(Uploads.file_info(full_path))
+
+    # No need to wait for answer
+    Task.start(fn ->
+      Bff.publish_video_command(
+        user_id,
+        socket.assigns.trace_id,
+        video_params
+      )
+    end)
 
     {:noreply, assign(socket, pending: true)}
   end

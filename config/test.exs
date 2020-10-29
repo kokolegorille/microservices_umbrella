@@ -27,3 +27,6 @@ config :authentication, Authentication.Repo,
 
 # Emailer
 config :emailer, Emailer.Mailer, adapter: Bamboo.TestAdapter
+
+# Video
+config :bff, uploads_directory: "/home/sqrt/DATA_2020/uploads_bff"

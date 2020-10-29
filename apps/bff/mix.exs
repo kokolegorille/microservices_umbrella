@@ -52,6 +52,9 @@ defmodule Bff.MixProject do
       {:ecto, "~> 3.5"},
       {:phoenix_ecto, "~> 4.2"},
       #
+      # Depends on file command
+      {:file_info, "~> 0.0.4"},
+      #
       {:event_store, in_umbrella: true},
       {:authentication, in_umbrella: true},
       {:identity, in_umbrella: true},

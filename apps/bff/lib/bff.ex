@@ -50,6 +50,21 @@ defmodule Bff do
 
   # COMMANDS
 
+  def publish_video_command(user_id, trace_id, attrs) do
+    id = attrs["id"]
+    stream_name = "video_publishing:command-#{id}"
+    %{
+      "stream_name" => stream_name,
+      "type" => "PublishVideo",
+      "data" => attrs,
+      "metadata" => %{
+        "trace_id" => trace_id,
+        "user_id" => user_id
+      }
+    }
+    |> IO.inspect(label: "PUBLISH VIDEO")
+  end
+
   def register_user_command(user_id, trace_id, attrs) do
     attrs = prepare_attrs(attrs)
     id = attrs["id"]
@@ -71,9 +86,13 @@ defmodule Bff do
 
   defp prepare_attrs(attrs) do
     attrs
-    |> Map.put("id", Ecto.UUID.generate())
+    |> put_id()
     |> Map.put("password_hash", encrypt_password(attrs["password"]))
     |> filter_password()
+  end
+
+  defp put_id(attrs) do
+    Map.put(attrs, "id", Ecto.UUID.generate())
   end
 
   defp filter_password(attrs) do
