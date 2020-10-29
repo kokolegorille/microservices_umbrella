@@ -1,6 +1,6 @@
-defmodule Emailer.Core do
+defmodule VideoPublishing.Core do
   @moduledoc """
-  Documentation for `Emailer Core`.
+  Documentation for `Video Publishing Core`.
   """
 
   def create_event(event_or_command) do

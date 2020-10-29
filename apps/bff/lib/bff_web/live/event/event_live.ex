@@ -31,7 +31,9 @@ defmodule BffWeb.EventLive do
     Enum.map(json, fn
       {key, value} when is_binary(value) -> "#{key}=#{truncate(value)}\r\n"
       {key, value} when is_list(value) -> "#{key}=#{truncate(Enum.join(value, ", "))}\r\n"
+      {key, value} when not is_nil(value) -> "#{key}=#{inspect value}\r\n"
       {key, nil} -> "#{key}=nil"
+      {key, any} -> "#{key}=unknown #{inspect any}"
     end)
   end
 

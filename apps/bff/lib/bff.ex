@@ -52,7 +52,7 @@ defmodule Bff do
 
   def publish_video_command(user_id, trace_id, attrs) do
     id = attrs["id"]
-    stream_name = "video_publishing:command-#{id}"
+    stream_name = "videoPublishing:command-#{id}"
     %{
       "stream_name" => stream_name,
       "type" => "PublishVideo",
@@ -62,7 +62,7 @@ defmodule Bff do
         "user_id" => user_id
       }
     }
-    |> IO.inspect(label: "PUBLISH VIDEO")
+    |> EventStore.create_event()
   end
 
   def register_user_command(user_id, trace_id, attrs) do
