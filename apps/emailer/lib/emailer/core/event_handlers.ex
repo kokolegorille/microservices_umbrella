@@ -3,8 +3,20 @@ defmodule Emailer.Core.EventHandlers do
 
   alias Emailer.{Core, Projection}
 
+  @system_sender "admin@example.com"
+
   def handle(%{type: "SendEmail", data: data, metadata: metadata} = _command) do
-    email_id = data["id"]
+    email_id = data["email_id"]
+    name = data["name"]
+
+    email = %{
+      "id" => email_id,
+      "from" => @system_sender,
+      "to" => data["email"],
+      "subject" => "Welcome",
+      "text" => "Welcome #{name} !",
+      "html" => "Welcome <strong>#{name} !</strong>"
+    }
 
     email_id
     |> Projection.load_email()
@@ -14,7 +26,7 @@ defmodule Emailer.Core.EventHandlers do
         %{
           "stream_name" => "sendEmail-#{email_id}",
           "type" => "EmailSent",
-          "data" => data,
+          "data" => email,
           "metadata" => metadata
         }
         |> Core.create_event()

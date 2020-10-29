@@ -23,6 +23,7 @@ defmodule Identity.Core.EventHandlers do
 
         Task.start(fn ->
           stream_name = "identity-#{user_id}"
+          email_id = Ecto.UUID.generate()
 
           %{
             "stream_name" => stream_name,
@@ -36,17 +37,13 @@ defmodule Identity.Core.EventHandlers do
           |> Core.create_event()
 
           # Send Email Command
-          email_id = Ecto.UUID.generate()
-
           %{
             "stream_name" => "sendEmail:command-#{email_id}",
             "type" => "SendEmail",
             "data" => %{
-              "id" => email_id,
-              "to" => user.email,
-              "subject" => "Welcome",
-              "text" => "Welcome #{user.name} !",
-              "html" => "Welcome <strong>#{user.name} !</strong>"
+              "email_id" => email_id,
+              "email" => email,
+              "name" => name,
             },
             "metadata" => %{
               "origin_stream_name" => stream_name,
