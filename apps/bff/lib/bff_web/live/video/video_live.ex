@@ -38,14 +38,26 @@ defmodule BffWeb.VideoLive do
     #   Bff.register_user_command(nil, socket.assigns.trace_id, params)
     # end)
 
-    IO.inspect(params["video"], label: "PARAMS")
+    IO.inspect(params, label: "PARAMS")
+
+    # https://github.com/phoenixframework/phoenix_live_view/issues/104
+    # As of now file upload is not supported yet in liveview.
+    # For fix use bas64.
+    # Params contains upload_base64 attribute
+
+    # Remove b64 header
+    # data:video/mp4;base64,
+
+    base64 = params["upload_base64"]
+    |> String.split(",", parts: 2)
+    |> List.last()
+
+    bin = Base.decode64!(base64)
+
+    file_path = "/tmp/file.mp4"
+
+    File.write(file_path, bin)
 
     {:noreply, assign(socket, pending: true)}
-  end
-
-  @impl true
-  def handle_event("change", %{"video" => payload}, socket) do
-    changeset = Schemas.change_video(%Video{}, payload)
-    {:noreply, assign(socket, changeset: changeset)}
   end
 end

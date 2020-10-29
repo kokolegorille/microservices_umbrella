@@ -18,7 +18,31 @@ import NProgress from "nprogress"
 import {LiveSocket} from "phoenix_live_view"
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}})
+
+// https://github.com/phoenixframework/phoenix_live_view/issues/104
+const hooks = {
+    base64_upload: {
+        mounted() {
+            this.el.addEventListener("change", e => {
+                const file = this.el.files[0];
+                
+                // Set the name of the file
+                var hidden_name = document.getElementById("video_live_form_upload_base64_filename")
+                hidden_name.value = file.name;
+                hidden_name.focus() // this is needed to register the new value with live view
+
+                toBase64(file).then(base64 => {
+                    var hidden = document.getElementById("video_live_form_upload_base64") // change this to the ID of your hidden input
+                    hidden.value = base64;
+                    hidden.focus() // this is needed to register the new value with live view
+                });        
+            })
+        }
+    }
+}
+
+
+let liveSocket = new LiveSocket("/live", Socket, {hooks, params: {_csrf_token: csrfToken}})
 
 // Show progress bar on live navigation and form submits
 window.addEventListener("phx:page-loading-start", info => NProgress.start())
@@ -33,3 +57,9 @@ liveSocket.connect()
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
 
+const toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+});
