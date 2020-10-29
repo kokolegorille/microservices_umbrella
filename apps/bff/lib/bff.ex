@@ -57,7 +57,7 @@ defmodule Bff do
 
     %{
       "stream_name" => stream_name,
-      "type" => "Register",
+      "type" => "RegisterUser",
       "data" => attrs,
       "metadata" => %{
         "trace_id" => trace_id,

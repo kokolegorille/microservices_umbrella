@@ -9,7 +9,7 @@ defmodule Identity.Core.EventHandlers do
     Authentication.ensure_uniqueness(field, value)
   end
 
-  def handle(%{type: "Register", data: data, metadata: metadata} = _command) do
+  def handle(%{type: "RegisterUser", data: data, metadata: metadata} = _command) do
     %{"id" => user_id} = data
     %{"trace_id" => trace_id} = metadata
 

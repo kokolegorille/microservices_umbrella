@@ -11,6 +11,7 @@
         <th>Type</th>
         <th>Metadata</th>
         <th>Data</th>
+        <th>Inserted at</th>
       </tr>
     </thead>
     <tbody id="events" phx-update="prepend">
@@ -27,6 +28,7 @@
           <td>
             <pre><code><%= display_json event.data %></code></pre>
           </td>
+          <td><%= event.inserted_at %></td>
         </tr>
       <% end %>
     </tbody>
