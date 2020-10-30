@@ -1,4 +1,4 @@
-defmodule Authentication.Core.User do
+defmodule Identity.Core.User do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -29,6 +29,7 @@ defmodule Authentication.Core.User do
     |> unique_constraint(:id)
   end
 
+  @doc false
   def encrypt_password(password) when is_binary(password) do
     %{password_hash: password_hash} = Argon2.add_hash(password)
     password_hash

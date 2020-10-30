@@ -17,13 +17,21 @@ config :event_store, EventStore.Repo,
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
-# AUTHENTICATION
-config :authentication, Authentication.Repo,
-  database: "authentication_test",
+# IDENTITY
+config :identity, Identity.Repo,
+  database: "identity_test",
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+# # AUTHENTICATION
+# config :authentication, Authentication.Repo,
+#   database: "authentication_test",
+#   username: "postgres",
+#   password: "postgres",
+#   hostname: "localhost",
+#   pool: Ecto.Adapters.SQL.Sandbox
 
 # Emailer
 config :emailer, Emailer.Mailer, adapter: Bamboo.TestAdapter

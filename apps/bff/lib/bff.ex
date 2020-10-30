@@ -11,7 +11,7 @@ defmodule Bff do
 
   def create_user_logged_event(user_id, trace_id, attrs) do
     %{
-      "stream_name" => "authentication-#{user_id}",
+      "stream_name" => "identity-#{user_id}",
       "type" => "UserLoggedIn",
       "data" => filter_password(attrs),
       "metadata" => %{
@@ -24,7 +24,7 @@ defmodule Bff do
 
   def create_user_logged_out_event(user_id, trace_id, attrs) do
     %{
-      "stream_name" => "authentication-#{user_id}",
+      "stream_name" => "identity-#{user_id}",
       "type" => "UserLoggedOut",
       "data" => attrs,
       "metadata" => %{
@@ -37,7 +37,7 @@ defmodule Bff do
 
   def create_user_login_failed_event(user_id, trace_id, attrs) do
     %{
-      "stream_name" => "authentication-#{user_id}",
+      "stream_name" => "identity-#{user_id}",
       "type" => "UserLoginFailed",
       "data" => filter_password(attrs),
       "metadata" => %{
@@ -100,7 +100,7 @@ defmodule Bff do
   end
 
   defp encrypt_password(password) do
-    Authentication.encrypt_password(password)
+    Identity.encrypt_password(password)
   end
 
   defp create_event(event) do

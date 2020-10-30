@@ -1,10 +1,10 @@
-defmodule Authentication.Factory do
+defmodule Identity.Factory do
   @moduledoc """
   Ex Machina factories module
   """
-  use ExMachina.Ecto, repo: Authentication.Repo
+  use ExMachina.Ecto, repo: Identity.Repo
 
-  alias Authentication.Core.User
+  alias Identity.Core.User
 
   def user_factory do
     %User{

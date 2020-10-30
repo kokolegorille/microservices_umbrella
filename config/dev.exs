@@ -79,14 +79,23 @@ config :event_store, EventStore.Repo,
 
 config :emailer, Emailer.Mailer, adapter: Bamboo.LocalAdapter
 
-# AUTHENTICATION
+# IDENTITY
 
-config :authentication, Authentication.Repo,
-  database: "authentication_dev",
+config :identity, Identity.Repo,
+  database: "identity_dev",
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
   pool_size: 10
 
-  # Video
-  config :bff, uploads_directory: "/home/sqrt/DATA_2020/uploads_bff"
+# # AUTHENTICATION
+
+# config :authentication, Authentication.Repo,
+#   database: "authentication_dev",
+#   username: "postgres",
+#   password: "postgres",
+#   hostname: "localhost",
+#   pool_size: 10
+
+# Video
+config :bff, uploads_directory: "/home/sqrt/DATA_2020/uploads_bff"

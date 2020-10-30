@@ -24,7 +24,7 @@ defmodule BffWeb.SessionLive do
         socket
       ) do
     socket =
-      case Authentication.authenticate(name, password) do
+      case Identity.authenticate(name, password) do
         {:ok, user} ->
           Task.start(fn ->
             Bff.create_user_logged_event(user.id, socket.assigns.trace_id, params)
@@ -37,7 +37,7 @@ defmodule BffWeb.SessionLive do
           |> redirect(to: Routes.session_from_token_path(socket, :create_from_token, token))
 
         {:error, reason} ->
-          case Authentication.get_user_by_name(name) do
+          case Identity.get_user_by_name(name) do
             nil ->
               nil
 

@@ -27,7 +27,7 @@
           id: :register_live_form,
           class: "form",
           phx_change: :change,
-          phx_submit: :save,
+          phx_submit: :save
         ]
       %>
         <div class="form-group">
@@ -51,8 +51,7 @@
         <%=
           submit "Submit",
             phx_disable_with: "Saving...",
-            class: "btn btn-primary",
-            disabled: not @changeset.valid?
+            class: "btn btn-primary"
         %>
       </form>
     </div>

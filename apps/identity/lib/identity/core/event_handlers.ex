@@ -1,49 +1,42 @@
 defmodule Identity.Core.EventHandlers do
   require Logger
 
-  alias Identity.{Core, Projection}
+  alias Identity.Core
 
-  # This is a uniqueness validator dependency
-  # to the view data authentication
-  defp ensure_uniqueness(field, value) do
-    Authentication.ensure_uniqueness(field, value)
-  end
+  # alias Identity.{Core, Projection}
+
+  # # This is a uniqueness validator dependency
+  # # to the view data authentication
+  # defp ensure_uniqueness(field, value) do
+  #   Authentication.ensure_uniqueness(field, value)
+  # end
 
   def handle(%{type: "RegisterUser", data: data, metadata: metadata} = _command) do
     %{"id" => user_id} = data
     %{"trace_id" => trace_id} = metadata
 
-    name = data["name"]
-    email = data["email"]
-    user = Projection.load_identity(user_id)
+    case Core.create_user(data) do
+      {:ok, user} ->
+        stream_name = "identity-#{user.id}"
+        email_id = Ecto.UUID.generate()
 
-    with {:a, true} <- {:a, Projection.ensure_not_registered(user)},
-      {:b, true} <- {:b, ensure_uniqueness(:name, name)},
-      {:c, true} <- {:c, ensure_uniqueness(:email, email)} do
-
-        Task.start(fn ->
-          stream_name = "identity-#{user_id}"
-          email_id = Ecto.UUID.generate()
-
+        [
           %{
             "stream_name" => stream_name,
             "type" => "UserRegistered",
-            "data" => data,
+            "data" => to_dto(user),
             "metadata" => %{
               "trace_id" => trace_id,
               "user_id" => user_id
             }
-          }
-          |> Core.create_event()
-
-          # Send Email Command
+          },
           %{
             "stream_name" => "sendEmail:command-#{email_id}",
             "type" => "SendEmail",
             "data" => %{
               "email_id" => email_id,
-              "email" => email,
-              "name" => name,
+              "email" => user.email,
+              "name" => user.name,
             },
             "metadata" => %{
               "origin_stream_name" => stream_name,
@@ -51,38 +44,99 @@ defmodule Identity.Core.EventHandlers do
               "user_id" => user_id
             }
           }
-          |> Core.create_event()
-        end)
+        ]
 
-    else
-      {atom, _} when atom in ~w(a b)a ->
-        Task.start(fn ->
+
+      {:error, changeset} ->
+        [
           %{
             "stream_name" => "identity-#{data["id"]}",
             "type" => "UserRegisterFailed",
-            "data" => %{name: ["Name already taken"]},
+            "data" => sanitize_errors(changeset),
             "metadata" => %{
               "trace_id" => trace_id,
               "user_id" => user_id
             }
           }
-          |> Core.create_event()
-        end)
-      _ ->
-        Task.start(fn ->
-          %{
-            "stream_name" => "identity-#{data["id"]}",
-            "type" => "UserRegisterFailed",
-            "data" => %{email: ["Email already taken"]},
-            "metadata" => %{
-              "trace_id" => trace_id,
-              "user_id" => user_id
-            }
-          }
-          |> Core.create_event()
-        end)
+        ]
     end
+    |> Enum.each(&Core.create_event(&1))
   end
+
+  # def handle(%{type: "RegisterUser", data: data, metadata: metadata} = _command) do
+  #   %{"id" => user_id} = data
+  #   %{"trace_id" => trace_id} = metadata
+
+  #   name = data["name"]
+  #   email = data["email"]
+  #   user = Projection.load_identity(user_id)
+
+  #   with {:a, true} <- {:a, Projection.ensure_not_registered(user)},
+  #     {:b, true} <- {:b, ensure_uniqueness(:name, name)},
+  #     {:c, true} <- {:c, ensure_uniqueness(:email, email)} do
+
+  #       Task.start(fn ->
+  #         stream_name = "identity-#{user_id}"
+  #         email_id = Ecto.UUID.generate()
+
+  #         %{
+  #           "stream_name" => stream_name,
+  #           "type" => "UserRegistered",
+  #           "data" => data,
+  #           "metadata" => %{
+  #             "trace_id" => trace_id,
+  #             "user_id" => user_id
+  #           }
+  #         }
+  #         |> Core.create_event()
+
+  #         # Send Email Command
+  #         %{
+  #           "stream_name" => "sendEmail:command-#{email_id}",
+  #           "type" => "SendEmail",
+  #           "data" => %{
+  #             "email_id" => email_id,
+  #             "email" => email,
+  #             "name" => name,
+  #           },
+  #           "metadata" => %{
+  #             "origin_stream_name" => stream_name,
+  #             "trace_id" => trace_id,
+  #             "user_id" => user_id
+  #           }
+  #         }
+  #         |> Core.create_event()
+  #       end)
+
+  #   else
+  #     {atom, _} when atom in ~w(a b)a ->
+  #       Task.start(fn ->
+  #         %{
+  #           "stream_name" => "identity-#{data["id"]}",
+  #           "type" => "UserRegisterFailed",
+  #           "data" => %{name: ["Name already taken"]},
+  #           "metadata" => %{
+  #             "trace_id" => trace_id,
+  #             "user_id" => user_id
+  #           }
+  #         }
+  #         |> Core.create_event()
+  #       end)
+  #     _ ->
+  #       Task.start(fn ->
+  #         %{
+  #           "stream_name" => "identity-#{data["id"]}",
+  #           "type" => "UserRegisterFailed",
+  #           "data" => %{email: ["Email already taken"]},
+  #           "metadata" => %{
+  #             "trace_id" => trace_id,
+  #             "user_id" => user_id
+  #           }
+  #         }
+  #         |> Core.create_event()
+  #       end)
+  #   end
+  # end
 
   def handle(%{type: "EmailSent", data: data, metadata: metadata} = _event) do
     Task.start(fn ->
@@ -104,5 +158,19 @@ defmodule Identity.Core.EventHandlers do
 
   def handle(command) do
     Logger.info("#{__MODULE__} Unknown Command #{inspect(command)}")
+  end
+
+  defp sanitize_errors(changeset) do
+    Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} ->
+      Enum.reduce(opts, msg, fn {key, value}, acc ->
+        String.replace(acc, "%{#{key}}", to_string(value))
+      end)
+    end)
+  end
+
+  defp to_dto(user) do
+    user
+    |> Jason.encode!()
+    |> Jason.decode!()
   end
 end

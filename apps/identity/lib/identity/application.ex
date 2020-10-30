@@ -7,6 +7,7 @@ defmodule Identity.Application do
 
   def start(_type, _args) do
     children = [
+      {Identity.Repo, []},
       Identity.Core.Listener
     ]
 
