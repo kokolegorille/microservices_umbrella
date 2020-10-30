@@ -27,7 +27,13 @@ defmodule BffWeb.EventLive.Index do
   defp subscribe(topic),
     do: Phoenix.PubSub.subscribe(PubSub, topic)
 
-  defp display_json(json) do
+  defp display_json(json) when is_struct(json) do
+    json
+    |> Map.from_struct()
+    |> display_json()
+  end
+
+  defp display_json(json) when is_map(json) do
     Enum.map(json, fn
       {key, value} when is_binary(value) -> "#{key}=#{truncate(value)}\r\n"
       {key, value} when is_list(value) -> "#{key}=#{truncate(Enum.join(value, ", "))}\r\n"
