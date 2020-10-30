@@ -1,4 +1,4 @@
-defmodule BffWeb.VideoLive do
+defmodule BffWeb.VideoLive.Index do
   use BffWeb, :live_view
   require Logger
 
@@ -7,12 +7,17 @@ defmodule BffWeb.VideoLive do
 
   @impl true
   def mount(_params, %{"trace_id" => trace_id} = session, socket) do
-    if connected?(socket), do: subscribe("trace_id:#{trace_id}")
+    if connected?(socket) do
+      subscribe("trace_id:#{trace_id}")
+      subscribe("videos")
+    end
+    videos = VideoStore.list_videos()
     {
       :ok,
       socket
       |> assign(trace_id: trace_id)
       |> assign(user_id: session["user_id"])
+      |> assign(videos: videos)
     }
   end
 
@@ -70,16 +75,29 @@ defmodule BffWeb.VideoLive do
       )
     end)
 
-    {:noreply, assign(socket, pending: true)}
+    {
+      :noreply,
+      socket
+      |> assign(pending: true)
+      |> assign(changeset: Schemas.change_video(%Video{}))
+    }
   end
 
   @impl true
-  def handle_info(%{type: "VideoPublished", payload: payload}, socket) do
-    IO.inspect(payload, label: "VIDEO")
-
+  def handle_info(%{type: "VideoStorePublished", payload: payload}, socket) do
     socket = socket
     |> assign(pending: false)
-    |> put_flash(:info, "VideoPublished")
+    |> assign(videos: [payload | socket.assigns.videos])
+    |> put_flash(:info, "Video Published")
+
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_info(%{type: "VideoStorePublishFailed", payload: _payload}, socket) do
+    socket = socket
+    |> assign(pending: false)
+    |> put_flash(:error, "Video Published Error")
 
     {:noreply, socket}
   end

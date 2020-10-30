@@ -1,6 +1,35 @@
 <div class="row">
     <div class="col-8">
         <h1>Videos</h1>
+
+        <%= if not Enum.empty? @videos do %>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Content type</th>
+                        <th>Size</th>
+                        <th>Likes</th>
+                        <th>Views</th>
+                        <th>Inserted at</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%= for video <- @videos do %>
+                        <tr>
+                            <td>
+                                <%= live_redirect video.filename, to: Routes.video_show_path(@socket, :show, video) %>
+                            </td>
+                            <td><%= video.content_type %></td>
+                            <td><%= video.size %></td>
+                            <td><%= video.likes_count %></td>
+                            <td><%= video.views_count %></td>
+                            <td><%= video.inserted_at %></td>
+                        </tr>
+                    <% end %>
+                </tbody>
+            </table>
+        <% end %>
     </div>
     <div class="col-4">
         <div class="card">

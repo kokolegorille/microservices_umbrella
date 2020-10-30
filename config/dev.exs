@@ -97,5 +97,12 @@ config :identity, Identity.Repo,
 #   hostname: "localhost",
 #   pool_size: 10
 
+config :video_store, VideoStore.Repo,
+  database: "video_store_dev",
+  username: "postgres",
+  password: "postgres",
+  hostname: "localhost",
+  pool_size: 10
+
 # Video
 config :bff, uploads_directory: "/home/sqrt/DATA_2020/uploads_bff"

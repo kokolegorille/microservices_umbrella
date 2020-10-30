@@ -46,4 +46,11 @@ config :identity, Identity.Repo, migration_primary_key: [name: :id, type: :binar
 
 # config :authentication, Authentication.Repo, migration_primary_key: [name: :id, type: :binary_id]
 
+# VideoStore
+
+config :video_store,
+  ecto_repos: [VideoStore.Repo]
+
+config :video_store, VideoStore.Repo, migration_primary_key: [name: :id, type: :binary_id]
+
 import_config "#{Mix.env()}.exs"

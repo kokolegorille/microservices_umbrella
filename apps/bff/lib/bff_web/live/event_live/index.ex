@@ -1,4 +1,4 @@
-defmodule BffWeb.EventLive do
+defmodule BffWeb.EventLive.Index do
   use BffWeb, :live_view
   require Logger
 

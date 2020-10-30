@@ -1,4 +1,4 @@
-defmodule BffWeb.PageLive do
+defmodule BffWeb.PageLive.Index do
   use BffWeb, :live_view
 
   @impl true

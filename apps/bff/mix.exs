@@ -38,7 +38,7 @@ defmodule Bff.MixProject do
   defp deps do
     [
       {:phoenix, "~> 1.5.6"},
-      {:phoenix_live_view, "~> 0.14.6"},
+      {:phoenix_live_view, "~> 0.14.8"},
       {:floki, ">= 0.27.0", only: :test},
       {:phoenix_html, "~> 2.14"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
@@ -60,6 +60,7 @@ defmodule Bff.MixProject do
       {:identity, in_umbrella: true},
       {:emailer, in_umbrella: true},
       {:video_publishing, in_umbrella: true},
+      {:video_store, in_umbrella: true},
     ]
   end
 

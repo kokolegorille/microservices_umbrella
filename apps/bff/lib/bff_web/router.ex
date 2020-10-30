@@ -29,12 +29,16 @@ defmodule BffWeb.Router do
     resources("/sessions", SessionController, only: [:delete], singleton: true) do
       get("/:token", SessionController, :create_from_token, as: :from_token)
     end
+    resources("/videos", VideoController, only: []) do
+      get "/get_video", VideoController, :get_video
+    end
 
-    live "/", PageLive, :index
+    live "/", PageLive.Index, :index
 
-    live "/videos", VideoLive, :index
+    live "/videos", VideoLive.Index, :index
+    live "/videos/:id", VideoLive.Show, :show
 
-    live "/events", EventLive, :index
+    live "/events", EventLive.Index, :index
 
     live "/login", SessionLive, :index
 

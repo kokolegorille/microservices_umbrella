@@ -21,9 +21,27 @@ defmodule EventStore.Core do
   @doc """
   list events.
 
+  filters:
+    * stream_name
+    * type
+    * gt_than_global
+    * gt_than_position
+    * metadata
+    * data
+    * before
+    * after
+
   # Example:
 
   Core.list_events order: :asc, filter: [type: "test"]
+
+  Core.list_events filter: [
+    metadata: [
+      {"user_id", "5b834fd4-b7f3-41af-9197-99bfb589950c"},
+      {"trace_id", "6db9b5e2-d70f-40e9-8f47-8994f89a6890"}
+    ],
+    before: Date.utc_today()
+  ]
   """
   def list_events(criteria \\ []) do
     criteria
@@ -143,6 +161,31 @@ defmodule EventStore.Core do
 
       {:type, type}, query ->
         from(q in query, where: q.type == ^type)
+
+      # Date query
+      {:before, date}, query ->
+        from(q in query, where: fragment("?::date", q.inserted_at) <= ^date)
+
+      {:after, date}, query ->
+        from(q in query, where: fragment("?::date", q.inserted_at) > ^date)
+
+      # JsonB filtering
+      #
+      # This allow filtering like
+      # EventStore.list_events filter: [
+      #  metadata: [{"user_id", "5b834fd4-b7f3-41af-9197-99bfb589950c"}, {"trace_id", "6db9b5e2-d70f-40e9-8f47-8994f89a6890"}]
+      # ]
+      {:metadata, metadata_keyword}, query ->
+        Enum.reduce(metadata_keyword, query, fn
+          {key, value}, subquery ->
+            from(q in subquery, where: fragment("metadata -> ? = ?", ^key, ^value))
+        end)
+
+      {:data, data_keyword}, query ->
+        Enum.reduce(data_keyword, query, fn
+          {key, value}, subquery ->
+            from(q in subquery, where: fragment("data -> ? = ?", ^key, ^value))
+        end)
 
       _arg, query ->
         query

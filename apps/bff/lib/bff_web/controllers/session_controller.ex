@@ -10,7 +10,7 @@ defmodule BffWeb.SessionController do
         |> assign(:current_user, user)
         |> put_session(:user_id, user.id)
         |> configure_session(renew: true)
-        |> redirect(to: Routes.page_path(conn, :index))
+        |> redirect(to: Routes.page_index_path(conn, :index))
 
       _ ->
         conn
@@ -30,6 +30,6 @@ defmodule BffWeb.SessionController do
     conn
     |> clear_session()
     |> put_flash(:info, gettext("Sign out successfully !"))
-    |> redirect(to: Routes.page_path(conn, :index))
+    |> redirect(to: Routes.page_index_path(conn, :index))
   end
 end

@@ -15,9 +15,13 @@ defmodule Bff.Core.EventHandlers do
     Phoenix.PubSub.broadcast(PubSub, "events", event)
   end
 
-  def handle(%{type: "VideoPublished" = type} = event) do
-    %{data: data, metadata: %{"trace_id" => trace_id}} = event
-    Phoenix.PubSub.broadcast(PubSub, "trace_id:#{trace_id}", %{type: type, payload: data})
+  def handle(%{type: "VideoStorePublished" = type} = event) do
+    # %{data: data, metadata: %{"trace_id" => trace_id}} = event
+    # Phoenix.PubSub.broadcast(PubSub, "trace_id:#{trace_id}", %{type: type, payload: data})
+
+    %{data: data} = event
+    Phoenix.PubSub.broadcast(PubSub, "videos", %{type: type, payload: data})
+
     Phoenix.PubSub.broadcast(PubSub, "events", event)
   end
 
