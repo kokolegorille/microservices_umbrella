@@ -24,7 +24,7 @@ defmodule Emailer.Core.EventHandlers do
     |> if do
       Task.start(fn ->
         %{
-          "stream_name" => "sendEmail-#{email_id}",
+          "stream_name" => "emailer-#{email_id}",
           "type" => "EmailSent",
           "data" => email,
           "metadata" => metadata

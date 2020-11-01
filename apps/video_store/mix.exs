@@ -31,7 +31,6 @@ defmodule VideoStore.MixProject do
       {:ecto, "~> 3.5"},
       {:ecto_sql, "~> 3.5"},
       {:postgrex, "~> 0.15.6"},
-      {:argon2_elixir, "~> 2.3"},
       {:jason, "~> 1.0"},
       {:ex_machina, "~> 2.4", only: :test},
       #

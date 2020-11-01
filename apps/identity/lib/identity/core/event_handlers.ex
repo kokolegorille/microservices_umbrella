@@ -23,7 +23,7 @@ defmodule Identity.Core.EventHandlers do
             }
           },
           %{
-            "stream_name" => "sendEmail:command-#{email_id}",
+            "stream_name" => "emailer:command-#{email_id}",
             "type" => "SendEmail",
             "data" => %{
               "email_id" => email_id,

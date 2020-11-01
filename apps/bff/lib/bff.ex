@@ -50,6 +50,21 @@ defmodule Bff do
 
   # COMMANDS
 
+  def view_video_command(user_id, trace_id, attrs) do
+    id = attrs["video_id"]
+    stream_name = "videoStore:command-#{id}"
+    %{
+      "stream_name" => stream_name,
+      "type" => "ViewVideo",
+      "data" => attrs,
+      "metadata" => %{
+        "trace_id" => trace_id,
+        "user_id" => user_id
+      }
+    }
+    |> EventStore.create_event()
+  end
+
   def publish_video_command(user_id, trace_id, attrs) do
     id = attrs["id"]
     stream_name = "videoPublishing:command-#{id}"

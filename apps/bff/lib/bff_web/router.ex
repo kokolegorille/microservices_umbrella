@@ -65,4 +65,9 @@ defmodule BffWeb.Router do
       live_dashboard "/dashboard", metrics: BffWeb.Telemetry
     end
   end
+
+  # Bamboo Email Viewer
+  if Mix.env == :dev do
+    forward "/sent_emails", Bamboo.SentEmailViewerPlug
+  end
 end

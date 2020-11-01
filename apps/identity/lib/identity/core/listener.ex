@@ -21,7 +21,7 @@ defmodule Identity.Core.Listener do
     #
     filter_fun = fn event ->
       String.starts_with?(event.stream_name, "identity:command") or
-        String.starts_with?(event.stream_name, "sendEmail-")
+        String.starts_with?(event.stream_name, "emailer-")
     end
 
     register(filter_fun)

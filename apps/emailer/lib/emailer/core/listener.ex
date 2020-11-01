@@ -19,7 +19,7 @@ defmodule Emailer.Core.Listener do
     # Subscribe to send email command
     #
     filter_fun = fn event ->
-      String.starts_with?(event.stream_name, "sendEmail:command-")
+      String.starts_with?(event.stream_name, "emailer:command-")
     end
 
     register(filter_fun)

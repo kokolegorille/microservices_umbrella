@@ -77,7 +77,9 @@ config :event_store, EventStore.Repo,
 
 # Emailer
 
-config :emailer, Emailer.Mailer, adapter: Bamboo.LocalAdapter
+config :emailer, Emailer.Core.Mailer, adapter: Bamboo.LocalAdapter
+
+config :emailer, :sender, "koko.le.gorille@gmail.com"
 
 # IDENTITY
 
