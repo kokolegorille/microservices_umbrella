@@ -10,6 +10,7 @@ defmodule FileStore.MixProject do
       deps_path: "../../deps",
       lockfile: "../../mix.lock",
       elixir: "~> 1.11",
+      aliases: aliases(),
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -18,8 +19,7 @@ defmodule FileStore.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
-      mod: {FileStore.Application, []}
+      extra_applications: [:logger]
     ]
   end
 
@@ -31,6 +31,19 @@ defmodule FileStore.MixProject do
       {:file_info, "~> 0.0.4"},
 
       {:event_store, in_umbrella: true}
+    ]
+  end
+
+  # Aliases are shortcuts or tasks specific to the current project.
+  # For example, to install project dependencies and perform other setup tasks, run:
+  #
+  #     $ mix setup
+  #
+  # See the documentation for `Mix` for more info on aliases.
+  defp aliases do
+    [
+      # Add this for umbrella global reset
+      "ecto.reset": []
     ]
   end
 end

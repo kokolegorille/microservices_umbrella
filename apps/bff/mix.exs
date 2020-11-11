@@ -52,15 +52,12 @@ defmodule Bff.MixProject do
       {:ecto, "~> 3.5"},
       {:phoenix_ecto, "~> 4.2"},
       #
-      # Depends on file command to detect uploads mime type
-      # thanks nobbz
-      {:file_info, "~> 0.0.4"},
-      #
       {:event_store, in_umbrella: true},
       {:identity, in_umbrella: true},
       {:emailer, in_umbrella: true},
       {:video_publishing, in_umbrella: true},
       {:video_store, in_umbrella: true},
+      {:file_store, in_umbrella: true},
     ]
   end
 
