@@ -106,5 +106,9 @@ config :video_store, VideoStore.Repo,
   hostname: "localhost",
   pool_size: 10
 
+# FILE STORE
+config :file_store,
+  storage_dir_prefix: "/home/sqrt/DATA_2020/uploads_bff"
+
 # Video
 config :bff, uploads_directory: "/home/sqrt/DATA_2020/uploads_bff"

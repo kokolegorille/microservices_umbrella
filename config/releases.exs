@@ -42,4 +42,12 @@ config :bff, BffWeb.Endpoint,
 uploads =
   System.get_env("UPLOADS") || "/home/admin/uploads"
 
+# TODO: REPLACE BY FILE STORE
+
 config :bff, uploads_directory: uploads
+
+#
+# FILE STORE
+#
+config :file_store,
+  storage_dir_prefix: uploads

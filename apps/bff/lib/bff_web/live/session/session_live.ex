@@ -23,11 +23,16 @@ defmodule BffWeb.SessionLive do
         %{"session" => %{"name" => name, "password" => password} = params},
         socket
       ) do
+
     socket =
       case Identity.authenticate(name, password) do
         {:ok, user} ->
+          metadata = %{
+            "user_id" => user.id,
+            "trace_id" => socket.assigns.trace_id
+          }
           Task.start(fn ->
-            Bff.create_user_logged_event(user.id, socket.assigns.trace_id, params)
+            Bff.create_user_logged_event(params, metadata)
           end)
 
           token = TokenHelpers.sign(user)
@@ -42,8 +47,12 @@ defmodule BffWeb.SessionLive do
               nil
 
             user ->
+              metadata = %{
+                "user_id" => user.id,
+                "trace_id" => socket.assigns.trace_id
+              }
               Task.start(fn ->
-                Bff.create_user_login_failed_event(user.id, socket.assigns.trace_id, params)
+                Bff.create_user_login_failed_event(params, metadata)
               end)
           end
 

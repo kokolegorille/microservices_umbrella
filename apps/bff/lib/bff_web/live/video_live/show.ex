@@ -13,15 +13,18 @@ defmodule BffWeb.VideoLive.Show do
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
     user_id = socket.assigns.user_id
-    trace_id = socket.assigns.trace_id
+
+    metadata = %{
+      "user_id" => user_id,
+      "trace_id" => socket.assigns.trace_id
+    }
 
     Bff.view_video_command(
-      user_id,
-      trace_id,
       %{
         "user_id" => user_id,
         "video_id" => id
-      }
+      },
+      metadata
     )
 
     {:noreply, assign(socket, :video, VideoStore.get_video(id))}

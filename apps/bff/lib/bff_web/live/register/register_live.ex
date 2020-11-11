@@ -29,7 +29,11 @@ defmodule BffWeb.RegisterLive do
   def handle_event("save", %{"registration" => params}, socket) do
     # No need to wait for answer
     Task.start(fn ->
-      Bff.register_user_command(nil, socket.assigns.trace_id, params)
+      metadata = %{
+        "user_id" => nil,
+        "trace_id" => socket.assigns.trace_id
+      }
+      Bff.register_user_command(params, metadata)
     end)
 
     {:noreply, assign(socket, pending: true)}

@@ -7,118 +7,53 @@ defmodule Bff do
   if it comes from the database, an external API or others.
   """
 
-  # EVENTS
+  alias __MODULE__.Core
 
-  def create_user_logged_event(user_id, trace_id, attrs) do
-    %{
-      "stream_name" => "identity-#{user_id}",
-      "type" => "UserLoggedIn",
-      "data" => filter_password(attrs),
-      "metadata" => %{
-        "trace_id" => trace_id,
-        "user_id" => user_id
-      }
-    }
-    |> create_event()
-  end
+  # QUERIES
 
-  def create_user_logged_out_event(user_id, trace_id, attrs) do
-    %{
-      "stream_name" => "identity-#{user_id}",
-      "type" => "UserLoggedOut",
-      "data" => attrs,
-      "metadata" => %{
-        "trace_id" => trace_id,
-        "user_id" => user_id
-      }
-    }
-    |> create_event()
-  end
+  defdelegate list_events(criteria \\ []), to: Core
 
-  def create_user_login_failed_event(user_id, trace_id, attrs) do
-    %{
-      "stream_name" => "identity-#{user_id}",
-      "type" => "UserLoginFailed",
-      "data" => filter_password(attrs),
-      "metadata" => %{
-        "trace_id" => trace_id,
-        "user_id" => user_id
-      }
-    }
-    |> create_event()
-  end
+  defdelegate list_videos(criteria \\ []), to: Core
 
   # COMMANDS
 
-  def view_video_command(user_id, trace_id, attrs) do
-    id = attrs["video_id"]
-    stream_name = "videoStore:command-#{id}"
-    %{
-      "stream_name" => stream_name,
-      "type" => "ViewVideo",
-      "data" => attrs,
-      "metadata" => %{
-        "trace_id" => trace_id,
-        "user_id" => user_id
-      }
-    }
-    |> EventStore.create_event()
+  def register_user_command(data, metadata) do
+    data
+    |> Core.register_user_command(metadata)
+    |> create_event()
   end
 
-  def publish_video_command(user_id, trace_id, attrs) do
-    id = attrs["id"]
-    stream_name = "videoPublishing:command-#{id}"
-    %{
-      "stream_name" => stream_name,
-      "type" => "PublishVideo",
-      "data" => attrs,
-      "metadata" => %{
-        "trace_id" => trace_id,
-        "user_id" => user_id
-      }
-    }
-    |> EventStore.create_event()
+  def view_video_command(data, metadata) do
+    data
+    |> Core.view_video_command(metadata)
+    |> create_event()
   end
 
-  def register_user_command(user_id, trace_id, attrs) do
-    attrs = prepare_attrs(attrs)
-    id = attrs["id"]
-    stream_name = "identity:command-#{id}"
-
-    %{
-      "stream_name" => stream_name,
-      "type" => "RegisterUser",
-      "data" => attrs,
-      "metadata" => %{
-        "trace_id" => trace_id,
-        "user_id" => user_id
-      }
-    }
-    |> EventStore.create_event()
+  def publish_video_command(data, metadata) do
+    data
+    |> Core.publish_video_command(metadata)
+    |> create_event()
   end
 
-  # Private
+  # EVENTS
 
-  defp prepare_attrs(attrs) do
-    attrs
-    |> put_id()
-    |> Map.put("password_hash", encrypt_password(attrs["password"]))
-    |> filter_password()
+  def create_user_logged_event(data, metadata) do
+    data
+    |> Core.create_user_logged_event(metadata)
+    |> create_event()
   end
 
-  defp put_id(attrs) do
-    Map.put(attrs, "id", Ecto.UUID.generate())
+  def create_user_logged_out_event(data, metadata) do
+    data
+    |> Core.create_user_logged_out_event(metadata)
+    |> create_event()
   end
 
-  defp filter_password(attrs) do
-    Map.update(attrs, "password", "--[FILTERED]--", fn _ -> "--[FILTERED]--" end)
+  def create_user_login_failed_event(data, metadata) do
+    data
+    |> Core.create_user_login_failed_event(metadata)
+    |> create_event()
   end
 
-  defp encrypt_password(password) do
-    Identity.encrypt_password(password)
-  end
-
-  defp create_event(event) do
-    EventStore.create_event(event)
-  end
+  defdelegate create_event(event), to: EventStore
 end

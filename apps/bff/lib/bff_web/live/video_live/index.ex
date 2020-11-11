@@ -11,7 +11,7 @@ defmodule BffWeb.VideoLive.Index do
       subscribe("trace_id:#{trace_id}")
       subscribe("videos")
     end
-    videos = VideoStore.list_videos()
+    videos = Bff.list_videos()
     {
       :ok,
       socket
@@ -68,10 +68,18 @@ defmodule BffWeb.VideoLive.Index do
       }
       |> Map.merge(Uploads.file_info(full_path))
 
+      # Bff.publish_video_command(
+      #   user_id,
+      #   socket.assigns.trace_id,
+      #   video_params
+      # )
+      metadata = %{
+        "user_id" => user_id,
+        "trace_id" => socket.assigns.trace_id
+      }
       Bff.publish_video_command(
-        user_id,
-        socket.assigns.trace_id,
-        video_params
+        video_params,
+        metadata
       )
     end)
 

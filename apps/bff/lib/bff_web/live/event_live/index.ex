@@ -7,7 +7,7 @@ defmodule BffWeb.EventLive.Index do
   @impl true
   def mount(_params, _session, socket) do
     if connected?(socket), do: subscribe("events")
-    events = EventStore.list_events(order: :desc, limit: 100)
+    events = Bff.list_events(order: :desc, limit: 100)
     {:ok, assign(socket, events: events), temporary_assigns: [events: []]}
   end
 
