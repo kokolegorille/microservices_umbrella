@@ -6,6 +6,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th>Owner ID</th>
                         <th>Name</th>
                         <th>Content type</th>
                         <th>Size</th>
@@ -17,6 +18,7 @@
                 <tbody>
                     <%= for video <- @videos do %>
                         <tr>
+                            <td><%= video.owner_id %></td>
                             <td>
                                 <%= live_redirect video.filename, to: Routes.video_show_path(@socket, :show, video) %>
                             </td>
@@ -35,7 +37,7 @@
         <div class="card">
             <div class="card-header">
             <h1>
-                Video
+                Upload a new Video
                 <%= if @pending do %>
                 <%= img_tag Routes.static_path(@socket, "/images/loader.gif") %>
                 <% end %>

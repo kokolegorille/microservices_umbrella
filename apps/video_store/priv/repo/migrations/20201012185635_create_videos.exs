@@ -7,7 +7,8 @@ defmodule VideoStore.Repo.Migrations.CreateUsers do
       add :filename, :string, null: false
       add :path, :string, null: false
       add :content_type, :string, null: false
-      add :size, :bigint
+      add :size, :bigint, null: false
+      add :hash, :string, null: false
       #
       add :likes_count, :bigint, default: 0
       add :views_count, :bigint, default: 0
