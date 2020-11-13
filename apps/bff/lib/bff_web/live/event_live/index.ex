@@ -11,12 +11,6 @@ defmodule BffWeb.EventLive.Index do
     {:ok, assign(socket, events: events), temporary_assigns: [events: []]}
   end
 
-  # @impl true
-  # def handle_params(_params, _url, socket) do
-  #   if connected?(socket), do: subscribe("events")
-  #   {:noreply, socket}
-  # end
-
   @impl true
   def handle_info(message, socket) do
     socket = assign(socket, events: [message])
@@ -43,7 +37,7 @@ defmodule BffWeb.EventLive.Index do
     end)
   end
 
-  defp truncate(input, length \\ 30)
+  defp truncate(input, length \\ 40)
 
   defp truncate(input, length) when is_binary(input) do
     if String.length(input) > length do

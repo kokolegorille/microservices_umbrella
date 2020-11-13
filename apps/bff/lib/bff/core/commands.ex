@@ -28,7 +28,7 @@ defmodule Bff.Core.Commands do
 
   def view_video_command(data, metadata) do
     id = data["video_id"]
-    stream_name = "videoStore:command-#{id}"
+    stream_name = "videoPublishing:command-#{id}"
     %{
       "stream_name" => stream_name,
       "type" => "ViewVideo",

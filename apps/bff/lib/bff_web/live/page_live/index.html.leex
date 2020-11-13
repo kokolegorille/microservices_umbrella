@@ -1,1 +1,29 @@
 <h1><%= gettext "Welcome" %></h1>
+
+<%= link "Jump to SPA", to: Routes.api_welcome_path(@socket, :index) %>
+
+<div class="flip-card">
+  <div class="flip-card-inner flip-vertical">
+    <div class="flip-card-front">
+      <p>FLIP VERTICAL</p>
+    </div>
+    <div class="flip-card-back">
+      <h1>John Doe</h1>
+      <p>Architect & Engineer</p>
+      <p>We love that guy</p>
+    </div>
+  </div>
+</div>
+
+<div class="flip-card">
+  <div class="flip-card-inner flip-horizontal">
+    <div class="flip-card-front">
+      <p>FLIP HORIZONTAL</p>
+    </div>
+    <div class="flip-card-back">
+      <h1>John Doe</h1>
+      <p>Architect & Engineer</p>
+      <p>We love that guy</p>
+    </div>
+  </div>
+</div>

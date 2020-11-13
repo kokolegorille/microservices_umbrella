@@ -25,7 +25,7 @@ defmodule BffWeb.SessionLive do
       ) do
 
     socket =
-      case Identity.authenticate(name, password) do
+      case Bff.authenticate(name, password) do
         {:ok, user} ->
           metadata = %{
             "user_id" => user.id,
@@ -42,7 +42,7 @@ defmodule BffWeb.SessionLive do
           |> redirect(to: Routes.session_from_token_path(socket, :create_from_token, token))
 
         {:error, reason} ->
-          case Identity.get_user_by_name(name) do
+          case Bff.get_user_by_name(name) do
             nil ->
               nil
 

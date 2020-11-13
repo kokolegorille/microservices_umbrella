@@ -31,6 +31,11 @@ defmodule VideoStore.Core do
   # Commands
   #########################
 
+  def increment_views(id) do
+    query = from Video, where: [id: ^id]
+    Repo.update_all(query, inc: [views_count: 1])
+  end
+
   @doc """
   create video workflow.
   """

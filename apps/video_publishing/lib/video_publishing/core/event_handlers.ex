@@ -1,7 +1,7 @@
 defmodule VideoPublishing.Core.EventHandlers do
   require Logger
 
-  alias VideoPublishing.Core
+  alias VideoPublishing.{Core, Projection}
 
   def handle(%{type: "PublishVideo", data: data, metadata: metadata} = _command) do
     video_id = data["id"]
@@ -15,34 +15,21 @@ defmodule VideoPublishing.Core.EventHandlers do
       }
       |> Core.create_event()
     end)
+  end
 
-    # name = data["name"]
-
-    # email = %{
-    #   "id" => email_id,
-    #   "from" => @system_sender,
-    #   "to" => data["email"],
-    #   "subject" => "Welcome",
-    #   "text" => "Welcome #{name} !",
-    #   "html" => "Welcome <strong>#{name} !</strong>"
-    # }
-
-    # email_id
-    # |> Projection.load_email()
-    # |> Projection.ensure_email_has_not_been_sent()
-    # |> if do
-    #   Task.start(fn ->
-    #     %{
-    #       "stream_name" => "sendEmail-#{email_id}",
-    #       "type" => "EmailSent",
-    #       "data" => email,
-    #       "metadata" => metadata
-    #     }
-    #     |> Core.create_event()
-    #   end)
-    # else
-    #   Logger.info("Email #{email_id} already sent")
-    # end
+  def handle(%{type: "ViewVideo", data: data, metadata: metadata} = _command) do
+    %{"user_id" => user_id, "video_id" => video_id} = data
+    if Projection.ensure_not_viewed(user_id, video_id) do
+      %{
+        "stream_name" => "videoPublishing-#{video_id}",
+        "type" => "VideoViewed",
+        "data" => data,
+        "metadata" => metadata
+      }
+      |> Core.create_event()
+    else
+      Logger.info("Video #{video_id} already viewed")
+    end
   end
 
   def handle(command) do

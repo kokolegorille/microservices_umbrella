@@ -9,6 +9,10 @@ defmodule Bff do
 
   alias __MODULE__.Core
 
+  defdelegate authenticate(name, password), to: Identity
+
+  defdelegate get_user_by_name(name), to: Identity
+
   # QUERIES
 
   defdelegate list_events(criteria \\ []), to: Core
