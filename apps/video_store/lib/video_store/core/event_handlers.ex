@@ -45,6 +45,44 @@ defmodule VideoStore.Core.EventHandlers do
     end
   end
 
+  def handle(%{type: "VideoLiked", data: data, metadata: metadata} = _event) do
+    video_id = data["video_id"]
+    stream_name = "videoStore-#{video_id}"
+
+    Core.increment_likes(video_id)
+    case Core.get_video(video_id) do
+      %Video{} = video ->
+        %{
+          "stream_name" => stream_name,
+          "type" => "VideoStoreUpdated",
+          "data" => video,
+          "metadata" => metadata
+        }
+        |> Core.create_event()
+      nil ->
+        Logger.info "Could not find video by id #{video_id}"
+    end
+  end
+
+  def handle(%{type: "VideoUnliked", data: data, metadata: metadata} = _event) do
+    video_id = data["video_id"]
+    stream_name = "videoStore-#{video_id}"
+
+    Core.decrement_likes(video_id)
+    case Core.get_video(video_id) do
+      %Video{} = video ->
+        %{
+          "stream_name" => stream_name,
+          "type" => "VideoStoreUpdated",
+          "data" => video,
+          "metadata" => metadata
+        }
+        |> Core.create_event()
+      nil ->
+        Logger.info "Could not find video by id #{video_id}"
+    end
+  end
+
   def handle(command) do
     Logger.info("#{__MODULE__} Unknown Command #{inspect(command)}")
   end

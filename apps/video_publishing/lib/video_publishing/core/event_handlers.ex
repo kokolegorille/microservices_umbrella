@@ -32,6 +32,36 @@ defmodule VideoPublishing.Core.EventHandlers do
     end
   end
 
+  def handle(%{type: "LikeVideo", data: data, metadata: metadata} = _command) do
+    %{"user_id" => user_id, "video_id" => video_id} = data
+    if Projection.ensure_not_liked(user_id, video_id) do
+      %{
+        "stream_name" => "videoPublishing-#{video_id}",
+        "type" => "VideoLiked",
+        "data" => data,
+        "metadata" => metadata
+      }
+      |> Core.create_event()
+    else
+      Logger.info("Video #{video_id} already liked")
+    end
+  end
+
+  def handle(%{type: "UnlikeVideo", data: data, metadata: metadata} = _command) do
+    %{"user_id" => user_id, "video_id" => video_id} = data
+    if Projection.ensure_liked(user_id, video_id) do
+      %{
+        "stream_name" => "videoPublishing-#{video_id}",
+        "type" => "VideoUnliked",
+        "data" => data,
+        "metadata" => metadata
+      }
+      |> Core.create_event()
+    else
+      Logger.info("Video #{video_id} not liked")
+    end
+  end
+
   def handle(command) do
     Logger.info("#{__MODULE__} Unknown Command #{inspect(command)}")
   end

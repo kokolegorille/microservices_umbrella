@@ -3,7 +3,7 @@ defmodule FileStore do
   Documentation for `FileStore`.
   """
 
-  def store(owner_id, id, filename, bin) do
+  def store_video(owner_id, id, filename, bin) do
     path = get_path(id)
     full_path = path <> filename
 

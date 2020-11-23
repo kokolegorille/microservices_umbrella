@@ -162,6 +162,10 @@ defmodule EventStore.Core do
       {:type, type}, query ->
         from(q in query, where: q.type == ^type)
 
+      # Filter events with a list of types
+      {:in_types, types}, query ->
+        from(q in query, where: q.type in ^types)
+
       # Date query
       {:before, date}, query ->
         from(q in query, where: fragment("?::date", q.inserted_at) <= ^date)

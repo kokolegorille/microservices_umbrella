@@ -56,7 +56,7 @@ defmodule BffWeb.VideoLive.Index do
       filename = params["upload_base64_filename"]
       user_id = socket.assigns.user_id
 
-      video_params = FileStore.store(user_id, id, filename, bin)
+      video_params = Bff.store_video(user_id, id, filename, bin)
 
       metadata = %{
         "user_id" => user_id,
@@ -91,6 +91,21 @@ defmodule BffWeb.VideoLive.Index do
     socket = socket
     |> assign(pending: false)
     |> put_flash(:error, "Video Published Error")
+
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_info(%{type: "VideoStoreUpdated", payload: payload}, socket) do
+    videos = socket.assigns.videos
+    |> Enum.map(fn
+      %{id: id} when id == payload.id -> payload
+      video -> video
+    end)
+
+    socket = socket
+    |> assign(videos: videos)
+    |> put_flash(:info, "Video Updated")
 
     {:noreply, socket}
   end

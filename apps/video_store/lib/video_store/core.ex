@@ -36,6 +36,16 @@ defmodule VideoStore.Core do
     Repo.update_all(query, inc: [views_count: 1])
   end
 
+  def increment_likes(id) do
+    query = from Video, where: [id: ^id]
+    Repo.update_all(query, inc: [likes_count: 1])
+  end
+
+  def decrement_likes(id) do
+    query = from Video, where: [id: ^id]
+    Repo.update_all(query, inc: [likes_count: -1])
+  end
+
   @doc """
   create video workflow.
   """

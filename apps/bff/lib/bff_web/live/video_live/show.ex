@@ -29,4 +29,44 @@ defmodule BffWeb.VideoLive.Show do
 
     {:noreply, assign(socket, :video, VideoStore.get_video(id))}
   end
+
+  @impl true
+  def handle_event("like", %{"id" => id}, socket) do
+    user_id = socket.assigns.user_id
+
+    metadata = %{
+      "user_id" => user_id,
+      "trace_id" => socket.assigns.trace_id
+    }
+
+    Bff.like_video_command(
+      %{
+        "user_id" => user_id,
+        "video_id" => id
+      },
+      metadata
+    )
+
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("unlike", %{"id" => id}, socket) do
+    user_id = socket.assigns.user_id
+
+    metadata = %{
+      "user_id" => user_id,
+      "trace_id" => socket.assigns.trace_id
+    }
+
+    Bff.unlike_video_command(
+      %{
+        "user_id" => user_id,
+        "video_id" => id
+      },
+      metadata
+    )
+
+    {:noreply, socket}
+  end
 end

@@ -9,6 +9,10 @@ defmodule Bff.Core do
 
   defdelegate view_video_command(data, metadata), to: Commands
 
+  defdelegate like_video_command(data, metadata), to: Commands
+
+  defdelegate unlike_video_command(data, metadata), to: Commands
+
   # EVENTS
 
   defdelegate create_user_logged_event(data, metadata), to: Commands

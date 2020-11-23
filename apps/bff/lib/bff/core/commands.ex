@@ -37,6 +37,28 @@ defmodule Bff.Core.Commands do
     }
   end
 
+  def like_video_command(data, metadata) do
+    id = data["video_id"]
+    stream_name = "videoPublishing:command-#{id}"
+    %{
+      "stream_name" => stream_name,
+      "type" => "LikeVideo",
+      "data" => data,
+      "metadata" => metadata
+    }
+  end
+
+  def unlike_video_command(data, metadata) do
+    id = data["video_id"]
+    stream_name = "videoPublishing:command-#{id}"
+    %{
+      "stream_name" => stream_name,
+      "type" => "UnlikeVideo",
+      "data" => data,
+      "metadata" => metadata
+    }
+  end
+
   # EVENTS
 
   def create_user_logged_event(attrs, metadata) do

@@ -33,6 +33,18 @@ defmodule Bff do
     |> create_event()
   end
 
+  def like_video_command(data, metadata) do
+    data
+    |> Core.like_video_command(metadata)
+    |> create_event()
+  end
+
+  def unlike_video_command(data, metadata) do
+    data
+    |> Core.unlike_video_command(metadata)
+    |> create_event()
+  end
+
   def publish_video_command(data, metadata) do
     data
     |> Core.publish_video_command(metadata)
@@ -60,4 +72,7 @@ defmodule Bff do
   end
 
   defdelegate create_event(event), to: EventStore
+
+  # FILE STORE
+  defdelegate store_video(user_id, id, filename, bin), to: FileStore
 end
