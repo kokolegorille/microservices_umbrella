@@ -1,0 +1,45 @@
+  <%= f = form_for @changeset, "#",
+    id: "video-form",
+    phx_target: @myself,
+    phx_change: "validate",
+    phx_submit: "save" %>
+
+    <div>
+        <%= live_file_input @uploads.video %>
+    </div>
+
+    <%= for {_ref, msg} <- @uploads.video.errors do %>
+        <p class="alert alert-danger"><%= Phoenix.Naming.humanize(msg) %></p>
+    <% end %>
+
+    <%= for entry <- @uploads.video.entries do %>
+        <div class="d-flex">
+            <div>
+                <progress max="100" value="<%= entry.progress %>" />
+            </div>
+            <div>
+                <a
+                href="#"
+                phx-click="cancel-entry"
+                phx-value-ref="<%= entry.ref %>"
+                phx-target="<%= @myself %>"
+                class="ml-2"
+                >
+                    Cancel
+                </a>
+            </div>
+        </div>
+    <% end  %>
+
+    <small id="emailHelp" class="form-text text-muted">
+        Accepted format: .mp4
+    </small>
+
+    <div class="form-group">
+        <%=
+            submit "Save",
+            phx_disable_with: "Saving...",
+            class: "btn btn-primary"
+        %>
+    </div>
+</form>

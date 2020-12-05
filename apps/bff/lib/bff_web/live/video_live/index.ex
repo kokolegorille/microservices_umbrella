@@ -34,47 +34,47 @@ defmodule BffWeb.VideoLive.Index do
     {:noreply, socket}
   end
 
-  @impl true
-  def handle_event("save", %{"video" => params}, socket) do
-    # No need to wait for answer
+  # @impl true
+  # def handle_event("save", %{"video" => params}, socket) do
+  #   # No need to wait for answer
 
-    Task.start(fn ->
-      id = Ecto.UUID.generate()
+  #   Task.start(fn ->
+  #     id = Ecto.UUID.generate()
 
-      # https://github.com/phoenixframework/phoenix_live_view/issues/104
-      # As of now file upload is not supported yet in liveview.
-      # For fix use bas64.
-      # Params contains upload_base64 attribute
+  #     # https://github.com/phoenixframework/phoenix_live_view/issues/104
+  #     # As of now file upload is not supported yet in liveview.
+  #     # For fix use bas64.
+  #     # Params contains upload_base64 attribute
 
-      # Remove b64 header
-      # data:video/mp4;base64,
-      bin = params["upload_base64"]
-      |> String.split(",", parts: 2)
-      |> List.last()
-      |> Base.decode64!()
+  #     # Remove b64 header
+  #     # data:video/mp4;base64,
+  #     bin = params["upload_base64"]
+  #     |> String.split(",", parts: 2)
+  #     |> List.last()
+  #     |> Base.decode64!()
 
-      filename = params["upload_base64_filename"]
-      user_id = socket.assigns.user_id
+  #     filename = params["upload_base64_filename"]
+  #     user_id = socket.assigns.user_id
 
-      video_params = Bff.store_video(user_id, id, filename, bin)
+  #     video_params = Bff.store_video(user_id, id, filename, bin)
 
-      metadata = %{
-        "user_id" => user_id,
-        "trace_id" => socket.assigns.trace_id
-      }
-      Bff.publish_video_command(
-        video_params,
-        metadata
-      )
-    end)
+  #     metadata = %{
+  #       "user_id" => user_id,
+  #       "trace_id" => socket.assigns.trace_id
+  #     }
+  #     Bff.publish_video_command(
+  #       video_params,
+  #       metadata
+  #     )
+  #   end)
 
-    {
-      :noreply,
-      socket
-      |> assign(pending: true)
-      |> assign(changeset: Schemas.change_video(%Video{}))
-    }
-  end
+  #   {
+  #     :noreply,
+  #     socket
+  #     |> assign(pending: true)
+  #     |> assign(changeset: Schemas.change_video(%Video{}))
+  #   }
+  # end
 
   @impl true
   def handle_info(%{type: "VideoStorePublished", payload: payload}, socket) do
