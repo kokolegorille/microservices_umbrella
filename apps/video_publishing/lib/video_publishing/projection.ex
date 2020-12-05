@@ -18,6 +18,8 @@ defmodule VideoPublishing.Projection do
     end)
   end
 
+  # Private
+
   defp load_video_liked_events(user_id, video_id) do
     filter = [
       stream_name: "videoPublishing-#{video_id}",

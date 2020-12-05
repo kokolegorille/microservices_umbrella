@@ -10,7 +10,7 @@ defmodule BffWeb.VideoLive.Index do
       subscribe("trace_id:#{trace_id}")
       subscribe("videos")
     end
-    videos = Bff.list_videos()
+    videos = Bff.list_videos(order: :desc)
     {
       :ok,
       socket

@@ -12,20 +12,11 @@ defmodule BffWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
-    # plug :put_root_layout, {BffWeb.LayoutView, :root}
+    plug :put_root_layout, {BffWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug EnsureTraceId
     plug EnsureUserId
-  end
-
-  pipeline :root_layout do
-    plug :put_root_layout, {BffWeb.LayoutView, :root}
-  end
-
-  # This will host the root of the api
-  pipeline :api_layout do
-    plug :put_root_layout, {BffWeb.LayoutView, :api}
   end
 
   pipeline :live_authenticated do
@@ -40,16 +31,9 @@ defmodule BffWeb.Router do
     plug(VerifyHeader, realm: "Bearer")
   end
 
-  # SPA Root
-  scope "/api", BffWeb.Api, as: :api do
-    pipe_through [:browser, :api_layout]
-
-    get "/", WelcomeController, :index
-  end
-
   # Standard browser
   scope "/", BffWeb do
-    pipe_through [:browser, :root_layout]
+    pipe_through :browser
 
     live "/", PageLive.Index, :index
 
