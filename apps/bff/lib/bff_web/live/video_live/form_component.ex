@@ -1,9 +1,6 @@
 defmodule BffWeb.VideoLive.FormComponent do
   use BffWeb, :live_component
 
-  # alias Bff.Schemas
-  # alias Bff.Schemas.Video
-
   @impl true
   def mount(socket) do
     {:ok, allow_upload(
@@ -16,14 +13,7 @@ defmodule BffWeb.VideoLive.FormComponent do
 
   @impl true
   def update(assigns, socket) do
-    # The changeset is not used, but required for form_for
-    # changeset = Schemas.change_video(%Video{})
-
-    {:ok,
-     socket
-     |> assign(assigns)
-    #  |> assign(:changeset, changeset)
-    }
+    {:ok, assign(socket, assigns)}
   end
 
   @impl true
@@ -32,7 +22,6 @@ defmodule BffWeb.VideoLive.FormComponent do
   def handle_event("validate", _params, socket) do
     {:noreply, socket}
   end
-
 
   ## SAMPLE DATA RECEIVED BY FILE UPLOAD!
 
@@ -55,9 +44,6 @@ defmodule BffWeb.VideoLive.FormComponent do
 
   def handle_event("save", _params, socket) do
     consume_uploaded_entries(socket, :video, fn meta, entry ->
-      # IO.inspect(meta, label: "META")
-      # IO.inspect(entry, label: "ENTRY")
-
       # Extract bin from meta.path
       bin = File.read!(meta.path)
 
@@ -77,9 +63,6 @@ defmodule BffWeb.VideoLive.FormComponent do
         "user_id" => user_id,
         "trace_id" => trace_id
       }
-
-      # IO.inspect(video_params, label: "VIDEO PARAMS")
-      # IO.inspect(metadata, label: "METADATA")
 
       # Create domain event command
       Bff.publish_video_command(
