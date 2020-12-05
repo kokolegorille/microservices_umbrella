@@ -80,7 +80,7 @@ defmodule BffWeb.VideoLive.Show do
   def handle_info(%{type: "VideoStoreUpdated", payload: payload}, socket) do
     socket = socket
     |> assign(video: payload)
-    |> put_flash(:info, "Video Updated")
+    # |> put_flash(:info, "Video Updated")
 
     {:noreply, socket}
   end

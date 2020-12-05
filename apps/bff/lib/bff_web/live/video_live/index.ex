@@ -49,7 +49,7 @@ defmodule BffWeb.VideoLive.Index do
 
     socket = socket
     |> assign(videos: videos)
-    |> put_flash(:info, "Video Updated")
+    # |> put_flash(:info, "Video Updated")
 
     {:noreply, socket}
   end
