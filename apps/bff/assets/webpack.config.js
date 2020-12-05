@@ -41,7 +41,35 @@ module.exports = (_env, options) => {
             'css-loader',
             'sass-loader',
           ],
-        }
+        },
+        // Load images
+        {
+          test: /\.(png|svg|jpe?g|gif)(\?.*$|$)/,
+          use: [
+            {
+              loader: "file-loader",
+              options: {
+                name: "[name].[ext]",
+                // Relative to output public_path
+                outputPath: "./images/"
+              }
+            }
+          ]
+        },
+        // Load fonts
+        {
+          test: /\.(woff|woff2|eot|ttf|otf)$/,
+          use: [
+            {
+              loader: "file-loader",
+              options: {
+                name: "[name].[ext]",
+                // Relative to output public_path
+                outputPath: "./fonts/"
+              }
+            }
+          ]
+        },
       ]
     },
     plugins: [

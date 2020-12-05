@@ -1,8 +1,14 @@
 defmodule BffWeb.VideoLive.Show do
   use BffWeb, :live_view
 
+  alias Bff.PubSub
+
   @impl true
   def mount(_params, %{"trace_id" => trace_id} = session, socket) do
+    if connected?(socket) do
+      subscribe("videos")
+    end
+
     {:ok,
     socket
       |> assign(trace_id: trace_id)
@@ -69,4 +75,17 @@ defmodule BffWeb.VideoLive.Show do
 
     {:noreply, socket}
   end
+
+  @impl true
+  def handle_info(%{type: "VideoStoreUpdated", payload: payload}, socket) do
+    socket = socket
+    |> assign(video: payload)
+    |> put_flash(:info, "Video Updated")
+
+    {:noreply, socket}
+  end
+
+  # Private
+  defp subscribe(topic),
+    do: Phoenix.PubSub.subscribe(PubSub, topic)
 end

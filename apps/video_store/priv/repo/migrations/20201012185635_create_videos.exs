@@ -12,6 +12,9 @@ defmodule VideoStore.Repo.Migrations.CreateUsers do
       #
       add :likes_count, :bigint, default: 0
       add :views_count, :bigint, default: 0
+      #
+      add :liked_by, :map
+      add :viewed_by, :map
 
       timestamps(type: :utc_datetime)
     end

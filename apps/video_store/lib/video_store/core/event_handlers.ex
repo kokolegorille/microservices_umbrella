@@ -33,6 +33,11 @@ defmodule VideoStore.Core.EventHandlers do
     Core.increment_views(video_id)
     case Core.get_video(video_id) do
       %Video{} = video ->
+        # Update video state
+        user_id = data["user_id"]
+        {:ok, video} = Core.viewed_by(video, user_id)
+
+        # Create domain event
         %{
           "stream_name" => stream_name,
           "type" => "VideoStoreUpdated",
@@ -52,6 +57,11 @@ defmodule VideoStore.Core.EventHandlers do
     Core.increment_likes(video_id)
     case Core.get_video(video_id) do
       %Video{} = video ->
+        # Update video state
+        user_id = data["user_id"]
+        {:ok, video} = Core.liked_by(video, user_id)
+
+        # Create domain event
         %{
           "stream_name" => stream_name,
           "type" => "VideoStoreUpdated",
@@ -71,6 +81,11 @@ defmodule VideoStore.Core.EventHandlers do
     Core.decrement_likes(video_id)
     case Core.get_video(video_id) do
       %Video{} = video ->
+        # Update video state
+        user_id = data["user_id"]
+        {:ok, video} = Core.unliked_by(video, user_id)
+
+        # Create domain event
         %{
           "stream_name" => stream_name,
           "type" => "VideoStoreUpdated",

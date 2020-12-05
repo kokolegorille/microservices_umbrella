@@ -87,6 +87,9 @@ defmodule BffWeb do
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
+      # Fontawesome helper
+      import BffWeb.Helpers.FaHelper
+
       import BffWeb.ErrorHelpers
       import BffWeb.Gettext
       alias BffWeb.Router.Helpers, as: Routes

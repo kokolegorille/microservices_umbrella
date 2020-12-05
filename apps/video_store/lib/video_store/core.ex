@@ -46,6 +46,37 @@ defmodule VideoStore.Core do
     Repo.update_all(query, inc: [likes_count: -1])
   end
 
+  #
+  def liked_by(%Video{} = video, user_id) do
+    if user_id not in video.liked_by do
+      video
+      |> Ecto.Changeset.change(%{liked_by: [user_id | video.liked_by]})
+      |> Repo.update()
+    else
+      {:ok, video}
+    end
+  end
+
+  def unliked_by(%Video{} = video, user_id) do
+    if user_id in video.liked_by do
+      video
+      |> Ecto.Changeset.change(%{liked_by: List.delete(video.liked_by, user_id)})
+      |> Repo.update()
+    else
+      {:ok, video}
+    end
+  end
+
+  def viewed_by(%Video{} = video, user_id) do
+    if user_id not in video.viewed_by do
+      video
+      |> Ecto.Changeset.change(%{viewed_by: [user_id | video.viewed_by]})
+      |> Repo.update()
+    else
+      {:ok, video}
+    end
+  end
+
   @doc """
   create video workflow.
   """

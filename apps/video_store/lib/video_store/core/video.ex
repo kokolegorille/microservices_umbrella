@@ -3,7 +3,10 @@ defmodule VideoStore.Core.Video do
   import Ecto.Changeset
 
   @derive {Jason.Encoder,
-    only: ~w(id owner_id filename path content_type size hash likes_count views_count)a}
+    only: ~w(
+      id owner_id filename path content_type size hash
+      likes_count views_count liked_by viewed_by
+    )a}
   @timestamps_opts type: :utc_datetime
   @primary_key {:id, :binary_id, autogenerate: false}
   @foreign_key_type :binary_id
@@ -14,8 +17,12 @@ defmodule VideoStore.Core.Video do
     field(:content_type, :string)
     field(:size, :integer)
     field(:hash, :string)
+    #
     field(:likes_count, :integer, default: 0)
     field(:views_count, :integer, default: 0)
+    #
+    field(:liked_by, {:array, :string}, default: [])
+    field(:viewed_by, {:array, :string}, default: [])
 
     timestamps()
   end
