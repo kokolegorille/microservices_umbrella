@@ -1,0 +1,26 @@
+/* FONTS */  
+@font-face {
+font-family: roboto;
+src: url("../fonts/roboto.ttf") format("truetype"); /* For IE */
+src: local("roboto"), url("../fonts/roboto.ttf") format("truetype"); /* For non-IE */
+}
+
+@font-face {
+font-family: droidSerif;
+src: url("../fonts/droid_serif.ttf") format("truetype"); /* For IE */
+src: local("droid_serif"), url("../fonts/droid_serif.ttf") format("truetype"); /* For non-IE */
+}
+
+$font_family_sans_serif: "roboto", "droidSans", "flamenco", Verdana, Arial, sans-serif;
+$font_family_serif: "droidSerif", "cherrySwash", Georgia, "Times New Roman", Times, serif;
+$font_family_monospace: "Courier New", Courier, monospace;
+
+
+body {
+font-family: $font_family_sans_serif;
+h1, h2, h3, h4, h5, h6 { font-family: $font_family_serif; }
+}
+
+.monospace {
+font-family: $font_family_monospace;
+}
