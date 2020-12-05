@@ -1,4 +1,6 @@
-  <%= f = form_for @changeset, "#",
+  <%=
+    #f = form_for @changeset, "#",
+    form_tag "#",
     id: "video-form",
     phx_target: @myself,
     phx_change: "validate",

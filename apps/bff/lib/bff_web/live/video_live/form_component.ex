@@ -1,8 +1,8 @@
 defmodule BffWeb.VideoLive.FormComponent do
   use BffWeb, :live_component
 
-  alias Bff.Schemas
-  alias Bff.Schemas.Video
+  # alias Bff.Schemas
+  # alias Bff.Schemas.Video
 
   @impl true
   def mount(socket) do
@@ -16,12 +16,14 @@ defmodule BffWeb.VideoLive.FormComponent do
 
   @impl true
   def update(assigns, socket) do
-    changeset = Schemas.change_video(%Video{})
+    # The changeset is not used, but required for form_for
+    # changeset = Schemas.change_video(%Video{})
 
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(:changeset, changeset)}
+    #  |> assign(:changeset, changeset)
+    }
   end
 
   @impl true
