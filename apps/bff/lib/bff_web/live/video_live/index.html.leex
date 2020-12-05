@@ -45,39 +45,40 @@
             </div>
             <div class="card-body">
 
-            <%=
-                f = form_for @changeset,
-                "#",
-                [
-                id: :video_live_form,
-                class: "form",
-                phx_submit: :save,
-                multipart: true
-                ]
-            %>
-                <div class="form-group">
-                    <label for="inputName">Video</label>
-                        <%=
-                            file_input f,
-                                :video, id: "inputVideo",
-                                class: "form-control",
-                                phx_hook: "base64_upload",
-                                required: true,
-                                accept: "video/mp4"
-                        %>
-                    <div><%= error_tag f, :video %></div>
-                    <small id="emailHelp" class="form-text text-muted">
-                        Accepted format: .mp4
-                    </small>
-                </div>
-                <%= hidden_input f, :upload_base64, [phx_update: "ignore"] %>
-                <%= hidden_input f, :upload_base64_filename, [phx_update: "ignore"] %>
                 <%=
-                submit "Submit",
-                    phx_disable_with: "Saving...",
-                    class: "btn btn-primary"
+                    f = form_for @changeset,
+                    "#",
+                    [
+                    id: :video_live_form,
+                    class: "form",
+                    phx_submit: :save,
+                    multipart: true
+                    ]
                 %>
-            </form>
+                    <div class="form-group">
+                        <label for="inputName">Video</label>
+                            <%=
+                                file_input f,
+                                    :video, id: "inputVideo",
+                                    class: "form-control",
+                                    phx_hook: "base64_upload",
+                                    required: true,
+                                    accept: "video/mp4"
+                            %>
+                        <div><%= error_tag f, :video %></div>
+                        <small id="emailHelp" class="form-text text-muted">
+                            Accepted format: .mp4
+                        </small>
+                    </div>
+                    <%= hidden_input f, :upload_base64, [phx_update: "ignore"] %>
+                    <%= hidden_input f, :upload_base64_filename, [phx_update: "ignore"] %>
+                    <%=
+                    submit "Submit",
+                        phx_disable_with: "Saving...",
+                        class: "btn btn-primary"
+                    %>
+                </form>
+
             </div>
         </div>
     </div>
