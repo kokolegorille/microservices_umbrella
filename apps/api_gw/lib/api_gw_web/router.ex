@@ -1,6 +1,8 @@
 defmodule ApiGWWeb.Router do
   use ApiGWWeb, :router
 
+  alias ApiGWWeb.Plugs.VerifyHeader
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -14,14 +16,14 @@ defmodule ApiGWWeb.Router do
 
     post("/registration", RegistrationController, :create)
     post("/authentication", AuthenticationController, :create)
-
-    resources "/videos", VideoController, except: [:new, :edit]
-    resources "/events", EventController, only: [:index]
+    patch("/authentication/refresh", AuthenticationController, :refresh)
 
     # Secure API
     pipe_through(:api_auth)
 
-    patch("/authentication/refresh", AuthenticationController, :refresh)
     delete("/authentication", AuthenticationController, :delete)
+
+    resources "/videos", VideoController, only: [:index, :show]
+    resources "/events", EventController, only: [:index]
   end
 end

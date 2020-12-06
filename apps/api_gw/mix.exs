@@ -43,8 +43,10 @@ defmodule ApiGW.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-
+      #
+      {:corsica, "~> 1.1"},
       # In Umbrella dependencies
+      # No need for emailer dependency
       {:event_store, in_umbrella: true},
       {:identity, in_umbrella: true},
       {:video_publishing, in_umbrella: true},

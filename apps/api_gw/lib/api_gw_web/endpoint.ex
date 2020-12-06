@@ -41,5 +41,15 @@ defmodule ApiGWWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+
+  # Allow reason react client to access api.
+  plug Corsica,
+    origins: [
+      "http://localhost:8080"
+    ],
+    allow_headers: ["accept", "content-type", "authorization"],
+    allow_credentials: true,
+    log: [rejected: :error, invalid: :warn, accepted: :debug]
+
   plug ApiGWWeb.Router
 end

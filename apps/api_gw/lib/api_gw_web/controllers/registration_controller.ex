@@ -1,7 +1,14 @@
 defmodule ApiGWWeb.RegistrationController do
   use ApiGWWeb, :controller
 
-  # plug(:scrub_params, "user" when action in [:create])
+  import ApiGWWeb.TokenHelpers, only: [sign: 1]
+
+  plug(:scrub_params, "user" when action in [:create])
+
+  def create(conn, %{"user" => params}) do
+    IO.inspect(params, label: "PARAMS")
+  end
+
 
   # def create(conn, %{"user" => params}) do
   #   # No need to wait for answer

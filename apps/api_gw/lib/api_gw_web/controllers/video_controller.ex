@@ -1,7 +1,11 @@
 defmodule ApiGWWeb.VideoController do
   use ApiGWWeb, :controller
 
+  alias ApiGWWeb.Plugs.EnsureAuthenticated
+
   action_fallback ApiGWWeb.FallbackController
+
+  plug EnsureAuthenticated
 
   def index(conn, _params) do
     videos = ApiGW.list_videos(order: :desc)

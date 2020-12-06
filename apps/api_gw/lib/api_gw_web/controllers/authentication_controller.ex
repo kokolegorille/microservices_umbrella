@@ -1,10 +1,10 @@
 defmodule ApiGWWeb.AuthenticationController do
   use ApiGWWeb, :controller
 
-  # alias ApiGWWeb.Plugs.EnsureAuthenticated
+  alias ApiGWWeb.Plugs.EnsureAuthenticated
 
-  # plug(:scrub_params, "session" when action in [:create])
-  # plug(EnsureAuthenticated when action in [:refresh, :delete])
+  plug(:scrub_params, "session" when action in [:create])
+  plug(EnsureAuthenticated when action in [:delete])
 
   # # Because of the microservices design, this should be async...
   # # Just send the command, and wait the answer on the trace channel

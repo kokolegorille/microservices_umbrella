@@ -51,7 +51,9 @@ defmodule Bff.MixProject do
       #
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:floki, ">= 0.27.0", only: :test},
-      #
+
+      # In Umbrella dependencies
+      # Require emailer in dev to show sent_emails
       {:event_store, in_umbrella: true},
       {:identity, in_umbrella: true},
       {:emailer, in_umbrella: true},
