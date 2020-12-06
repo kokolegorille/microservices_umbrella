@@ -6,11 +6,17 @@ defmodule ApiGWWeb.FallbackController do
   """
   use ApiGWWeb, :controller
 
+  alias ApiGWWeb.{
+    ChangesetView,
+    ErrorView,
+    AuthenticationView
+  }
+
   # This clause handles errors returned by Ecto's insert/update/delete.
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     conn
     |> put_status(:unprocessable_entity)
-    |> put_view(ApiGWWeb.ChangesetView)
+    |> put_view(ChangesetView)
     |> render("error.json", changeset: changeset)
   end
 
@@ -18,7 +24,14 @@ defmodule ApiGWWeb.FallbackController do
   def call(conn, {:error, :not_found}) do
     conn
     |> put_status(:not_found)
-    |> put_view(ApiGWWeb.ErrorView)
+    |> put_view(ErrorView)
     |> render(:"404")
+  end
+
+  def call(conn, {:error, :unauthorized}) do
+    conn
+    |> put_status(:not_found)
+    |> put_view(AuthenticationView)
+    |> render("error.json")
   end
 end

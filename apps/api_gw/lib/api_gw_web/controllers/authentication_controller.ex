@@ -1,48 +1,32 @@
 defmodule ApiGWWeb.AuthenticationController do
   use ApiGWWeb, :controller
 
-  alias ApiGWWeb.Plugs.EnsureAuthenticated
+  import ApiGWWeb.TokenHelpers, only: [sign: 1]
 
-  plug(:scrub_params, "session" when action in [:create])
+  alias ApiGWWeb.Plugs.EnsureAuthenticated
+  alias ApiGWWeb.FallbackController
+
+  action_fallback(FallbackController)
+
   plug(EnsureAuthenticated when action in [:delete])
 
-  # # Because of the microservices design, this should be async...
-  # # Just send the command, and wait the answer on the trace channel
+  def create(conn, %{"name" => name, "password" => password}) do
+    with {:ok, user} <- ApiGW.authenticate(name, password),
+         token <- sign(user) do
+      conn
+      |> put_status(:created)
+      # |> put_resp_cookie("refresh_token", %{user_id: user.id}, sign: true)
+      |> render("show.json", token: token, user: user)
+    end
+  end
 
-  # def create(conn, %{"session" => params}) do
-  #   %{"name" => name, "password" => password} = params
-  #   case Bff.authenticate(name, password) do
-  #     {:ok, user} ->
-  #       metadata = %{
-  #         "user_id" => user.id,
-  #         "trace_id" => conn.assigns.trace_id
-  #       }
-  #       Task.start(fn ->
-  #         Bff.create_user_logged_event(params, metadata)
-  #       end)
-  #     {:error, _reason} ->
-  #       case Bff.get_user_by_name(name) do
-  #         nil ->
-  #           nil
+  def create(conn, _params) do
+    conn
+    |> put_status(:unauthorized)
+    |> render("error.json")
+  end
 
-  #         user ->
-  #           metadata = %{
-  #             "user_id" => user.id,
-  #             "trace_id" => conn.assigns.trace_id
-  #           }
-  #           Task.start(fn ->
-  #             Bff.create_user_login_failed_event(params, metadata)
-  #           end)
-  #       end
-  #   end
-  #   json conn, %{}
-  # end
-
-  # def refresh(conn, _params) do
-  #   json conn, %{}
-  # end
-
-  # def delete(conn, _params) do
-  #   json conn, %{}
-  # end
+  def delete(conn, _) do
+    render(conn, "delete.json")
+  end
 end

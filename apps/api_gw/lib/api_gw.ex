@@ -7,6 +7,10 @@ defmodule ApiGW do
   if it comes from the database, an external API or others.
   """
 
+  # IDENTITY
+
+  defdelegate authenticate(name, password), to: Identity
+
   # EVENTS
 
   defdelegate list_events(criteria \\ []), to: EventStore
