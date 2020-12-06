@@ -9,7 +9,7 @@
 # move said applications out of the umbrella.
 import Config
 
-# Configures the endpoint
+# Configures Bff endpoint
 config :bff, BffWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "fMewBMoKUX1L1qvnXauO9gNXrgjWx1us5jAwzcbm7SUjZoKqr35tQEyi/ENI8Ugq",
