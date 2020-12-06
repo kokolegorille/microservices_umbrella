@@ -33,8 +33,8 @@ defmodule MicroservicesUmbrella.MixProject do
     [
       # run `mix setup` in all child apps
       setup: ["cmd mix setup"],
-      # run `mix reset` in all child apps
-      reset: ["cmd mix ecto.reset"]
+      # run `mix ecto.reset` in all child apps
+      "ecto.reset": ["cmd mix ecto.reset"]
     ]
   end
 end

@@ -4,7 +4,6 @@ defmodule BffWeb.Router do
   alias BffWeb.Plugs.{
     EnsureTraceId,
     EnsureUserId,
-    VerifyHeader,
     EnsureAuthenticated
   }
 
@@ -23,13 +22,9 @@ defmodule BffWeb.Router do
     plug(EnsureAuthenticated)
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
-  pipeline :api_auth do
-    plug(VerifyHeader, realm: "Bearer")
-  end
+  # pipeline :api do
+  #   plug :accepts, ["json"]
+  # end
 
   # Standard browser
   scope "/", BffWeb do
@@ -68,19 +63,6 @@ defmodule BffWeb.Router do
 
       live_dashboard "/dashboard", metrics: BffWeb.Telemetry
     end
-  end
-
-  scope "/api", BffWeb.Api, as: :api do
-    pipe_through :api
-
-    post("/registration", RegistrationController, :create)
-    post("/authentication", AuthenticationController, :create)
-
-    # Secure API
-    pipe_through(:api_auth)
-
-    patch("/authentication/refresh", AuthenticationController, :refresh)
-    delete("/authentication", AuthenticationController, :delete)
   end
 
   # Bamboo Email Viewer

@@ -57,6 +57,15 @@ config :bff, BffWeb.Endpoint,
     ]
   ]
 
+# API GW
+
+config :api_gw, ApiGWWeb.Endpoint,
+  http: [port: 4001],
+  debug_errors: true,
+  code_reloader: true,
+  check_origin: false,
+  watchers: []
+
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
 

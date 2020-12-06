@@ -1,9 +1,9 @@
-defmodule Bff.MixProject do
+defmodule ApiGW.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :bff,
+      app: :api_gw,
       version: "0.1.0",
       build_path: "../../_build",
       config_path: "../../config/config.exs",
@@ -23,8 +23,8 @@ defmodule Bff.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Bff.Application, []},
-      extra_applications: [:logger, :runtime_tools, :os_mon]
+      mod: {ApiGW.Application, []},
+      extra_applications: [:logger, :runtime_tools]
     ]
   end
 
@@ -38,26 +38,18 @@ defmodule Bff.MixProject do
   defp deps do
     [
       {:phoenix, "~> 1.5.7"},
-      {:phoenix_ecto, "~> 4.2"},
-      {:ecto_sql, "~> 3.5"},
-      {:phoenix_live_view, "~> 0.15.0"},
-      {:phoenix_html, "~> 2.14"},
-      {:phoenix_live_dashboard, "~> 0.4"},
-      {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_poller, "~> 0.5"},
+      {:telemetry_metrics, "~> 0.4"},
+      {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.4"},
-      #
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:floki, ">= 0.27.0", only: :test},
-      #
+      {:plug_cowboy, "~> 2.0"},
+
+      # In Umbrella dependencies
       {:event_store, in_umbrella: true},
       {:identity, in_umbrella: true},
-      {:emailer, in_umbrella: true},
       {:video_publishing, in_umbrella: true},
       {:video_store, in_umbrella: true},
-      {:file_store, in_umbrella: true},
+      # {:file_store, in_umbrella: true},
     ]
   end
 
@@ -69,7 +61,7 @@ defmodule Bff.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "cmd npm install --prefix assets"],
+      setup: ["deps.get"],
       # Add this for umbrella global reset
       "ecto.reset": []
     ]
