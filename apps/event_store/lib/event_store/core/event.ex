@@ -2,7 +2,7 @@ defmodule EventStore.Core.Event do
   use Ecto.Schema
 
   # No need for update_at, as it is append only mode.
-  @timestamps_opts type: :utc_datetime, updated_at: false
+  @timestamps_opts type: :utc_datetime_usec, updated_at: false
   @primary_key {:id, :binary_id, autogenerate: true}
 
   # No need for foreign key type...

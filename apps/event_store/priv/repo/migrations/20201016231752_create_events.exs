@@ -11,7 +11,7 @@ defmodule EventStore.Repo.Migrations.CreateEvents do
       add :metadata, :map
       add :expected_version, :bigint
 
-      timestamps(type: :utc_datetime, updated_at: false)
+      timestamps(type: :utc_datetime_usec, updated_at: false)
     end
 
     create unique_index(:events, [:global_position])
