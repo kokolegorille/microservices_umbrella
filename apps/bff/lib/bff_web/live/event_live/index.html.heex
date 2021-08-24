@@ -15,7 +15,7 @@
     </thead>
     <tbody id="events" phx-update="prepend">
       <%= for event <- @events do %>
-        <tr id="<%= event.id %>">
+        <tr id={event.id}>
           <td><%= event.global_position %></td>
           <td><%= event.position %></td>
           <td><%= event.stream_name %></td>

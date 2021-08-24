@@ -7,7 +7,10 @@ defmodule BffWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_bff_key",
-    signing_salt: "xsTMBri5"
+    signing_salt: "xsTMBri5",
+    #
+    # https://elixirforum.com/t/how-to-add-samesite-cookies-on-phoenix/31658/8
+    same_site: "Strict"
   ]
 
   socket "/socket", BffWeb.UserSocket,
@@ -32,6 +35,7 @@ defmodule BffWeb.Endpoint do
     socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
     plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader
+    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :app4am
   end
 
   plug Phoenix.LiveDashboard.RequestLogger,

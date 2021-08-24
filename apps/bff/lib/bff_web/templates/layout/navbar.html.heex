@@ -16,14 +16,22 @@
             <li class="nav-item">
                 <%= link "Videos", to: Routes.video_index_path(@conn, :index), class: "nav-link" %>
             </li>
-            <li class="nav-item">
-                <%= link "Events", to: Routes.event_index_path(@conn, :index), class: "nav-link" %>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Admin
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                    <%= link "Events", to: Routes.event_index_path(@conn, :index), class: "dropdown-item" %>
+                </li>
+                <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
+                    <li>
+                    <%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home), class: "dropdown-item" %>
+                    </li>
+                <% end %>
+                </ul>
             </li>
-            <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-            <li class="nav-item">
-                <%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home), class: "nav-link" %>
-            </li>
-            <% end %>
 
             <li class="nav-item">
             <%=

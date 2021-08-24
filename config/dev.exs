@@ -79,7 +79,7 @@ config :phoenix, :plug_init_mode, :runtime
 # EVENT STORE
 
 config :event_store, EventStore.Repo,
-  database: "event_store_dev",
+  database: "micro_store_dev",
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
@@ -94,7 +94,7 @@ config :emailer, :sender, "koko.le.gorille@gmail.com"
 # IDENTITY
 
 config :identity, Identity.Repo,
-  database: "identity_dev",
+  database: "micro_identity_dev",
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
@@ -110,7 +110,7 @@ config :identity, Identity.Repo,
 #   pool_size: 10
 
 config :video_store, VideoStore.Repo,
-  database: "video_store_dev",
+  database: "micro_video_store_dev",
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
@@ -121,4 +121,4 @@ config :file_store,
   storage_dir_prefix: "/home/sqrt/DATA_2020/uploads_bff"
 
 # Video
-config :bff, uploads_directory: "/home/sqrt/DATA_2020/uploads_bff"
+config :bff, uploads_directory: "/home/sqrt/DATA_2021/uploads_bff"

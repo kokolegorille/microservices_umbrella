@@ -7,7 +7,10 @@ defmodule BffWeb.VideoLive.FormComponent do
       socket,
       :video,
       accept: ~w(.mp4),
-      max_entries: 1
+      max_entries: 1,
+      auto_upload: true,
+      # Provide a limit, as the default is low
+      max_file_size: 5_000_000_000,
     )}
   end
 

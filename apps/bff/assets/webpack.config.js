@@ -1,5 +1,5 @@
 const path = require('path');
-const glob = require('glob');
+// const glob = require('glob');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require('terser-webpack-plugin');
@@ -9,7 +9,7 @@ module.exports = (_env, options) => {
   const devMode = options.mode !== 'production';
 
   return {
-    devtool: devMode ? 'eval-cheap-module-source-map' : undefined,
+    stats: "minimal",
     optimization: {
       minimizer: [
         new TerserPlugin({}),
@@ -17,7 +17,8 @@ module.exports = (_env, options) => {
       ]
     },
     entry: {
-      'app': glob.sync('./vendor/**/*.js').concat(['./js/app.js']),
+      // 'app': glob.sync('./vendor/**/*.js').concat(['./js/app.js']),
+      'app': './js/app.js',
       'client': './js/client'
     },
     output: {
@@ -25,6 +26,7 @@ module.exports = (_env, options) => {
       path: path.resolve(__dirname, '../priv/static/js'),
       publicPath: '/js/'
     },
+    devtool: devMode ? 'eval-cheap-module-source-map' : undefined,
     module: {
       rules: [
         {
@@ -42,33 +44,22 @@ module.exports = (_env, options) => {
             'sass-loader',
           ],
         },
-        // Load images
+        // Load images with the asset module, WP5
         {
-          test: /\.(png|svg|jpe?g|gif)(\?.*$|$)/,
-          use: [
-            {
-              loader: "file-loader",
-              options: {
-                name: "[name].[ext]",
-                // Relative to output public_path
-                outputPath: "./images/"
-              }
-            }
-          ]
+          //test: /\.(png|svg|jpe?g|gif)(\?.*$|$)/,
+          test: /\.(ico|png|svg|jpg|jpeg|gif|svg|webp|tiff)$/i,
+          type: "asset/resource",
+          generator: {
+            filename: "../images/[hash][ext][query]"
+          }
         },
-        // Load fonts
+        // Load fonts with the asset module, WP5
         {
           test: /\.(woff|woff2|eot|ttf|otf)$/,
-          use: [
-            {
-              loader: "file-loader",
-              options: {
-                name: "[name].[ext]",
-                // Relative to output public_path
-                outputPath: "./fonts/"
-              }
-            }
-          ]
+          type: "asset/resource",
+          generator: {
+            filename: "../fonts/[hash][ext][query]"
+          }
         },
       ]
     },

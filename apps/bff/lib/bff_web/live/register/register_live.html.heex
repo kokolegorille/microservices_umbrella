@@ -19,17 +19,10 @@
 
     </div>
     <div class="card-body">
-
-      <%=
-        f = form_for @changeset,
-        "#",
-        [
-          id: :register_live_form,
-          class: "form",
-          phx_change: :change,
-          phx_submit: :save
-        ]
-      %>
+      <.form let={f} for={@changeset} url="#"
+        id="register_live_form"
+        class="form"
+        phx_submit="save">
         <div class="form-group">
           <label for="inputName">Name</label>
           <%= text_input f, :name, id: "inputName", class: "form-control" %>
@@ -53,7 +46,7 @@
             phx_disable_with: "Saving...",
             class: "btn btn-primary"
         %>
-      </form>
+      </.form>
     </div>
   </div>
 </div>
