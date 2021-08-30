@@ -1,6 +1,25 @@
 # MicroservicesUmbrella
 
-Building an Elixir application with CQRS/ES
+Building an Elixir application with CQRS/ES.
+
+This is a demo application translated from the book [Practical Microservices](https://pragprog.com/titles/egmicro/practical-microservices/).
+
+Translated from Node to Elixir, w/ some adaptation to actor model.
+
+## Configuration
+
+To make it work, You need to set the path for files and videos in config/dev.exs to a writable location.
+
+```
+# FILE STORE
+# Configure where to save files...
+config :file_store,
+  storage_dir_prefix: "/path/to/uploads"
+
+# Video
+# Configure where to save videos...
+config :bff, uploads_directory: "/path/to/uploads"
+```
 
 ## ApiGW
 

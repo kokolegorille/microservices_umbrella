@@ -64,21 +64,4 @@ config :video_store,
 
 config :video_store, VideoStore.Repo, migration_primary_key: [name: :id, type: :binary_id]
 
-# Bamboo
-
-# config :lo_tube, LoTube.Notifications.Mailer,
-#   adapter: Bamboo.SendGridAdapter,
-#   api_key: "",
-#   # can be `:always` or `:never`
-#   tls: :if_available,
-#   # or {:system, "ALLOWED_TLS_VERSIONS"} w/ comma seprated values (e.g. "tlsv1.1,tlsv1.2")
-#   allowed_tls_versions: [:tlsv1, :"tlsv1.1", :"tlsv1.2"],
-#   # can be `true`
-#   ssl: true,
-#   retries: 1,
-#   # can be `true`
-#   no_mx_lookups: false,
-#   # can be `:always`. If your smtp relay requires authentication set it to `:always`.
-#   auth: :if_available
-
 import_config "#{Mix.env()}.exs"

@@ -117,8 +117,10 @@ config :video_store, VideoStore.Repo,
   pool_size: 10
 
 # FILE STORE
+# Configure where to save files...
 config :file_store,
-  storage_dir_prefix: "/home/sqrt/DATA_2020/uploads_bff"
+  storage_dir_prefix: "/path/to/uploads"
 
 # Video
-config :bff, uploads_directory: "/home/sqrt/DATA_2021/uploads_bff"
+# Configure where to save videos...
+config :bff, uploads_directory: "/path/to/uploads"
