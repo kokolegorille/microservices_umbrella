@@ -17,16 +17,16 @@ config :bff, BffWeb.Endpoint,
   pubsub_server: Bff.PubSub,
   live_view: [signing_salt: "12+W53f5"]
 
-# Configure ApiGW endpoint
-config :api_gw,
-  namespace: ApiGW
+# # Configure ApiGW endpoint
+# config :api_gw,
+#   namespace: ApiGW
 
-config :api_gw, ApiGWWeb.Endpoint,
-  url: [host: "localhost"],
-  secret_key_base: "t15A/GHGjZ4/J7kJOrNx2bWx77qiob01fopJICcDe3Rl9lHoSXXLSS5sPHSDoQO4",
-  render_errors: [view: ApiGWWeb.ErrorView, accepts: ~w(json), layout: false],
-  pubsub_server: ApiGW.PubSub,
-  live_view: [signing_salt: "MmwTLqNz"]
+# config :api_gw, ApiGWWeb.Endpoint,
+#   url: [host: "localhost"],
+#   secret_key_base: "t15A/GHGjZ4/J7kJOrNx2bWx77qiob01fopJICcDe3Rl9lHoSXXLSS5sPHSDoQO4",
+#   render_errors: [view: ApiGWWeb.ErrorView, accepts: ~w(json), layout: false],
+#   pubsub_server: ApiGW.PubSub,
+#   live_view: [signing_salt: "MmwTLqNz"]
 
 # Configures Elixir's Logger
 config :logger, :console,

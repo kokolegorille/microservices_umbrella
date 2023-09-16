@@ -19,10 +19,12 @@
 
     </div>
     <div class="card-body">
-      <.form let={f} for={@changeset} url="#"
+      <.form 
+        :let={f} 
+        for={@changeset}
         id="register_live_form"
         class="form"
-        phx_submit="save">
+        phx-submit="save">
         <div class="form-group">
           <label for="inputName">Name</label>
           <%= text_input f, :name, id: "inputName", class: "form-control" %>

@@ -43,8 +43,7 @@
             <div class="card-body">
 
                 <%=
-                    live_component @socket,
-                        BffWeb.VideoLive.FormComponent,
+                    live_component BffWeb.VideoLive.FormComponent,
                         id: :live_video_form,
                         user_id: assigns.user_id,
                         trace_id: assigns.trace_id

@@ -28,12 +28,13 @@ defmodule Identity.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ecto, "~> 3.5"},
-      {:ecto_sql, "~> 3.5"},
-      {:postgrex, "~> 0.15.6"},
-      {:argon2_elixir, "~> 2.3"},
-      {:jason, "~> 1.0"},
-      {:ex_machina, "~> 2.4", only: :test},
+      {:ecto, "~> 3.10"},
+      {:ecto_sql, "~> 3.10"},
+      {:postgrex, "~> 0.17"},
+      # {:argon2_elixir, "~> 2.3"},
+      {:argon2_elixir, "~> 3.2"},
+      {:jason, "~> 1.4"},
+      {:ex_machina, "~> 2.7", only: :test},
       #
       {:event_store, in_umbrella: true}
     ]

@@ -27,7 +27,7 @@ defmodule Identity.Core do
   """
   def authenticate(name, password) do
     with %User{} = user <- get_user_by_name(name),
-         {:ok, _} <- check_password(user, password) do
+         true <- check_password(user, password) do
       {:ok, user}
     else
       _ -> {:error, :unauthorized}
@@ -45,8 +45,18 @@ defmodule Identity.Core do
 
   # Private
 
-  defp check_password(user, password) do
-    Argon2.check_pass(user, password)
+  # defp check_password(user, password) do
+  #   Argon2.check_pass(user, password)
+  # end
+
+  def check_password(%User{password_hash: password_hash}, password)
+    when is_binary(password_hash) and byte_size(password) > 0 do
+    Argon2.verify_pass(password, password_hash)
+  end
+
+  def check_password(_, _) do
+    Argon2.no_user_verify()
+    false
   end
 
   #########################

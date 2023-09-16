@@ -45,7 +45,7 @@ defmodule BffWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {BffWeb.LayoutView, "live.html"}
+        layout: {BffWeb.LayoutView, :live}
 
       unquote(view_helpers())
     end
@@ -86,6 +86,9 @@ defmodule BffWeb do
 
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
+
+      # Core components
+      import BffWeb.CoreComponents
 
       # Fontawesome helper
       import BffWeb.Helpers.FaHelper

@@ -14,10 +14,11 @@
 
     </div>
     <div class="card-body">
-      <.form let={f} for={@changeset} url="#"
+      <.form :let={f} 
+        for={@changeset}
         id="login-form"
         class="form"
-        phx_submit="save">
+        phx-submit="save">
 
         <div class="form-group">
           <label for="inputName">Name</label>

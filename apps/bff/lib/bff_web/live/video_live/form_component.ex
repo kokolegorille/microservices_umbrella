@@ -10,7 +10,7 @@ defmodule BffWeb.VideoLive.FormComponent do
       max_entries: 1,
       auto_upload: true,
       # Provide a limit, as the default is low
-      max_file_size: 5_000_000_000,
+      max_file_size: 5_000_000_000
     )}
   end
 

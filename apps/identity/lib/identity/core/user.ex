@@ -31,7 +31,8 @@ defmodule Identity.Core.User do
 
   @doc false
   def encrypt_password(password) when is_binary(password) do
-    %{password_hash: password_hash} = Argon2.add_hash(password)
-    password_hash
+    # %{password_hash: password_hash} = Argon2.add_hash(password)
+    # password_hash
+    Argon2.hash_pwd_salt(password)
   end
 end

@@ -11,7 +11,8 @@ defmodule Bff.MixProject do
       lockfile: "../../mix.lock",
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      # compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      compilers: [:phoenix | Mix.compilers()],
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -37,20 +38,20 @@ defmodule Bff.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.5.11"},
-      {:phoenix_ecto, "~> 4.2"},
-      {:ecto_sql, "~> 3.5"},
-      {:phoenix_live_view, "~> 0.16.0"},
-      {:phoenix_html, "~> 3.0"},
-      {:phoenix_live_dashboard, "~> 0.5"},
+      {:phoenix, "~> 1.6.16"},
+      {:phoenix_ecto, "~> 4.4"},
+      {:ecto_sql, "~> 3.10"},
+      {:phoenix_live_view, "~> 0.19"},
+      {:phoenix_html, "~> 3.3"},
+      {:phoenix_live_dashboard, "~> 0.8"},
       {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_poller, "~> 0.5"},
-      {:gettext, "~> 0.11"},
-      {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.4"},
+      {:telemetry_poller, "~> 1.0"},
+      {:gettext, "~> 0.23"},
+      {:jason, "~> 1.4"},
+      {:plug_cowboy, "~> 2.6"},
       #
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:floki, ">= 0.27.0", only: :test},
+      {:floki, "~> 0.34", only: :test},
 
       # In Umbrella dependencies
       # Require emailer in dev to show sent_emails

@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 database_url =
   System.get_env("IDENTITY_DATABASE_URL") ||

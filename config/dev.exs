@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -59,12 +59,12 @@ config :bff, BffWeb.Endpoint,
 
 # API GW
 
-config :api_gw, ApiGWWeb.Endpoint,
-  http: [port: 4001],
-  debug_errors: true,
-  code_reloader: true,
-  check_origin: false,
-  watchers: []
+# config :api_gw, ApiGWWeb.Endpoint,
+#   http: [port: 4001],
+#   debug_errors: true,
+#   code_reloader: true,
+#   check_origin: false,
+#   watchers: []
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
@@ -119,8 +119,11 @@ config :video_store, VideoStore.Repo,
 # FILE STORE
 # Configure where to save files...
 config :file_store,
-  storage_dir_prefix: "/path/to/uploads"
+  # storage_dir_prefix: "/path/to/uploads"
+  storage_dir_prefix: "/export/microservices/uploads"
 
 # Video
 # Configure where to save videos...
-config :bff, uploads_directory: "/path/to/uploads"
+config :bff,
+  # uploads_directory: "/path/to/uploads"
+  uploads_directory: "/export/microservices/uploads"
