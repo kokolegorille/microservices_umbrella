@@ -27,7 +27,7 @@ defmodule BffWeb.Endpoint do
     at: "/",
     from: :bff,
     gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+    only: BffWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

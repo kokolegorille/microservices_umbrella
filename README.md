@@ -123,3 +123,22 @@ Untracked files:
   (use "git add <file>..." to include in what will be committed)
 	apps/bff/lib/bff_web/live/components/
 ```
+
+## Fix webpack config, fix video form
+
+```
+% git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   README.md
+	modified:   apps/bff/assets/package-lock.json
+	modified:   apps/bff/assets/webpack.config.js
+	modified:   apps/bff/lib/bff_web.ex
+	modified:   apps/bff/lib/bff_web/endpoint.ex
+	modified:   apps/bff/lib/bff_web/live/video_live/form_component.ex
+	modified:   apps/bff/lib/bff_web/live/video_live/form_component.html.heex
+```

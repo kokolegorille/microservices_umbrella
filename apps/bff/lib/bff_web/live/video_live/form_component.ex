@@ -16,7 +16,12 @@ defmodule BffWeb.VideoLive.FormComponent do
 
   @impl true
   def update(assigns, socket) do
-    {:ok, assign(socket, assigns)}
+    {
+      :ok,
+      socket
+      |> assign(assigns)
+      |> assign(form: to_form(%{}, as: :video))
+    }
   end
 
   @impl true
